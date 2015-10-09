@@ -153,7 +153,12 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
     protected function checkLowerCase(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $varName)
     {
         $isInLowerCase = true;
+	$safeVariables = array('_GET', '_POST', '_FILES', '_SERVER', '_COOKIE');
         if (0 !== strcmp($varName, strtolower($varName))) {
+            // Check the variable name against an array of safe variable names
+            if(in_array($varName, $safeVariables)) {
+                return true;
+            }
             // get the expected variable name
             $varNameWithUnderscores = preg_replace('/([A-Z])/', '_${1}', $varName);
             $expectedVarName = strtolower(ltrim($varNameWithUnderscores, '_'));
