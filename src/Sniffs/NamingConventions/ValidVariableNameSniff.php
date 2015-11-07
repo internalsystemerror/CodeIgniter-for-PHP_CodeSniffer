@@ -242,7 +242,7 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
         $isLengthRight = true;
         // cleans variable name
         $varName = ltrim($varName, '_');
-        if (strlen($varName) <= $minLength) {
+        if (strlen($varName) < $minLength) {
             // skips adding an error, if it is a specific variable name
             if (in_array($varName, $allowedShortName)) {
                 return $isLengthRight;
