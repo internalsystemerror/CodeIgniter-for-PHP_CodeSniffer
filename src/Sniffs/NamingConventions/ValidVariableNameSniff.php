@@ -220,7 +220,7 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
      * A variable name is too short if it is shorter than the minimal
      * length and it isn't in the list of allowed short names nor declared in a
      * for loop (in which it would be nested).
-     * The minimal length is defined in the function. It is 3 chars now.
+     * The minimal length is defined in the function. It is 2 chars now.
      * The list of allowed short names is defined in the function.
      * It is case-sensitive. It contains only 'ci' now.
      *
@@ -255,7 +255,7 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
             $error = 'Very short'
                 . (
                     $minLength > 0 ?
-                    ' (i.e. less than ' . ($minLength + 1) . ' chars)'
+                    ' (i.e. less than ' . ($minLength) . ' chars)'
                     : ''
                 )
                 . ', non-word variables like "' . $varName
