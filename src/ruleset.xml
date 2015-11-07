@@ -48,6 +48,15 @@
   <rule ref="PEAR.WhiteSpace.ScopeClosingBrace"/>
   <rule ref="Generic.Functions.FunctionCallArgumentSpacing"/>
 
+  <!-- Disallow spaces for indent and set tab-width -->
+  <arg name="tab-width" value="4"/>
+  <rule ref="Generic.WhiteSpace.ScopeIndent">
+    <properties>
+      <property name="indent" value="4"/>
+      <property name="tabIndent" value="true"/>
+    </properties>
+  </rule>
+
   <!-- @todo Please see PHP_CodeSniffer_Standards_CodeIgniter_CodeIgniterCodingStandard for more details about what there is to do -->
 </ruleset>
 
