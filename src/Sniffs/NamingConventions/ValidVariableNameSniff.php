@@ -154,6 +154,12 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
     {
         $isInLowerCase = true;
         if (0 !== strcmp($varName, strtolower($varName))) {
+
+            // allowed names (add $_FILES)
+            if (in_array($varName, array('_FILES'))) {
+                return true;
+            }
+
             // get the expected variable name
             $varNameWithUnderscores = preg_replace('/([A-Z])/', '_${1}', $varName);
             $expectedVarName = strtolower(ltrim($varNameWithUnderscores, '_'));
