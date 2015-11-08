@@ -141,6 +141,7 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
      * Checks that the variable name is all in lower case, else it add an error
      * to $phpcsFile. Returns true if variable name is all in lower case, false
      * otherwise.
+     * The list of allowed upper case names is defined in the function.
      *
      * @param PHP_CodeSniffer_File $phpcsFile The current file being processed.
      * @param int                  $stackPtr  The position of the current token
@@ -155,8 +156,9 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
         $isInLowerCase = true;
         if (0 !== strcmp($varName, strtolower($varName))) {
 
-            // allowed names (add $_FILES)
-            if (in_array($varName, array('_FILES'))) {
+            // allowed upper case names
+            $allowedUpperCaseNames = array('CI', '_FILES');
+            if (in_array($varName, $allowedUpperCaseNames)) {
                 return true;
             }
 
