@@ -228,7 +228,7 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
      * for loop (in which it would be nested).
      * The minimal length is defined in the function. It is 2 chars now.
      * The list of allowed short names is defined in the function.
-     * It is case-sensitive. It contains only 'ci' now.
+     * It is case-sensitive. It contains only 'ci' and 'CI' now.
      *
      * @param PHP_CodeSniffer_File $phpcsFile The current file being processed.
      * @param int                  $stackPtr  The position of the current token
@@ -243,7 +243,7 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
     protected function checkLength(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $varName)
     {
         $minLength = 3;
-        $allowedShortName = array('ci');
+        $allowedShortName = array('ci', 'CI');
 
         $isLengthRight = true;
         // cleans variable name
