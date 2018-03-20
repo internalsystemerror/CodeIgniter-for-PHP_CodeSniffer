@@ -141,6 +141,7 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
      * Checks that the variable name is all in lower case, else it add an error
      * to $phpcsFile. Returns true if variable name is all in lower case, false
      * otherwise.
+     * The list of allowed upper case names is defined in the function.
      *
      * @param PHP_CodeSniffer_File $phpcsFile The current file being processed.
      * @param int                  $stackPtr  The position of the current token
@@ -154,6 +155,13 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
     {
         $isInLowerCase = true;
         if (0 !== strcmp($varName, strtolower($varName))) {
+
+            // allowed upper case names
+            $allowedUpperCaseNames = array('CI', '_FILES');
+            if (in_array($varName, $allowedUpperCaseNames)) {
+                return true;
+            }
+
             // get the expected variable name
             $varNameWithUnderscores = preg_replace('/([A-Z])/', '_${1}', $varName);
             $expectedVarName = strtolower(ltrim($varNameWithUnderscores, '_'));
@@ -220,9 +228,9 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
      * A variable name is too short if it is shorter than the minimal
      * length and it isn't in the list of allowed short names nor declared in a
      * for loop (in which it would be nested).
-     * The minimal length is defined in the function. It is 3 chars now.
+     * The minimal length is defined in the function. It is 2 chars now.
      * The list of allowed short names is defined in the function.
-     * It is case-sensitive. It contains only 'ci' now.
+     * It is case-sensitive. It contains only 'ci' and 'CI' now.
      *
      * @param PHP_CodeSniffer_File $phpcsFile The current file being processed.
      * @param int                  $stackPtr  The position of the current token
@@ -237,12 +245,12 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
     protected function checkLength(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $varName)
     {
         $minLength = 3;
-        $allowedShortName = array('ci');
+        $allowedShortName = array('ci', 'CI');
 
         $isLengthRight = true;
         // cleans variable name
         $varName = ltrim($varName, '_');
-        if (strlen($varName) <= $minLength) {
+        if (strlen($varName) < $minLength) {
             // skips adding an error, if it is a specific variable name
             if (in_array($varName, $allowedShortName)) {
                 return $isLengthRight;
@@ -255,7 +263,7 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
             $error = 'Very short'
                 . (
                     $minLength > 0 ?
-                    ' (i.e. less than ' . ($minLength + 1) . ' chars)'
+                    ' (i.e. less than ' . ($minLength) . ' chars)'
                     : ''
                 )
                 . ', non-word variables like "' . $varName
