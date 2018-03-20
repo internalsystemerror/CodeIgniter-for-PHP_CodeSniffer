@@ -55,14 +55,19 @@ class CodeIgniter_Sniffs_NamingConventions_ValidFileNameSniff implements PHP_Cod
         // computes the expected filename based on the name of the class or interface that it contains.
         $decNamePtr = $phpcsFile->findNext(T_STRING, $stackPtr);
         $decName = $tokens[$decNamePtr]['content'];
-        $expectedFileName = strtolower($decName);
+        // Handle MY_ core files differently
+        if(substr($decName, 0, 3) === 'MY_') {
+            $expectedFileName = 'MY_'.ucfirst(strtolower(str_replace('MY_','',$decName)));
+        } else {
+            $expectedFileName = ucfirst(strtolower($decName));
+        }
         // extracts filename without extension from its path.
         $fullPath = $phpcsFile->getFilename();
         $fileNameAndExt = basename($fullPath);
         $fileName = substr($fileNameAndExt, 0, strrpos($fileNameAndExt, '.'));
 
         if ($expectedFileName !== $fileName) {
-            $errorTemplate = 'Filename "%s" doesn\'t match the name of the %s that it contains "%s" in lower case. "%s" was expected.';
+            $errorTemplate = 'Filename "%s" doesn\'t match the name of the %s that it contains "%s" in ucfirst case. "%s" was expected.';
             $errorMessage = sprintf(
                 $errorTemplate,
                 $fileName,
