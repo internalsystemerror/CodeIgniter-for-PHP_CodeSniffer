@@ -141,6 +141,7 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
      * Checks that the variable name is all in lower case, else it add an error
      * to $phpcsFile. Returns true if variable name is all in lower case, false
      * otherwise.
+     * The list of allowed upper case names is defined in the function.
      *
      * @param PHP_CodeSniffer_File $phpcsFile The current file being processed.
      * @param int                  $stackPtr  The position of the current token
@@ -153,12 +154,15 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
     protected function checkLowerCase(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $varName)
     {
         $isInLowerCase = true;
-	$safeVariables = array('_GET', '_POST', '_FILES', '_SERVER', '_COOKIE');
+	
         if (0 !== strcmp($varName, strtolower($varName))) {
-            // Check the variable name against an array of safe variable names
-            if(in_array($varName, $safeVariables)) {
+
+            // allowed upper case names
+            $allowedUpperCaseNames = array('CI', '_GET', '_POST', '_FILES', '_SERVER', '_COOKIE');
+            if (in_array($varName, $allowedUpperCaseNames)) {
                 return true;
             }
+
             // get the expected variable name
             $varNameWithUnderscores = preg_replace('/([A-Z])/', '_${1}', $varName);
             $expectedVarName = strtolower(ltrim($varNameWithUnderscores, '_'));
@@ -227,7 +231,7 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
      * for loop (in which it would be nested).
      * The minimal length is defined in the function. It is 2 chars now.
      * The list of allowed short names is defined in the function.
-     * It is case-sensitive. It contains only 'ci' now.
+     * It is case-sensitive. It contains only 'ci' and 'CI' now.
      *
      * @param PHP_CodeSniffer_File $phpcsFile The current file being processed.
      * @param int                  $stackPtr  The position of the current token
@@ -242,7 +246,7 @@ class CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Co
     protected function checkLength(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $varName)
     {
         $minLength = 2;
-        $allowedShortName = array('ci');
+        $allowedShortName = array('ci', 'CI');
 
         $isLengthRight = true;
         // cleans variable name
