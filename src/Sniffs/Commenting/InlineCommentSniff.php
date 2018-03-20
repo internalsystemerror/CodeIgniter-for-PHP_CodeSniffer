@@ -165,13 +165,17 @@ class CodeIgniter_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffe
         // check blank line after the long comment
         $lastCommentPtr = end($commentLines);
         $lastNextSpacePtr = $lastCommentPtr + 1;
-        while (T_WHITESPACE === $tokens[$lastNextSpacePtr]['code'] && $lastNextSpacePtr < count($tokens)) {
-            $lastNextSpacePtr++;
+        if (isset($tokens[$lastNextSpacePtr]['code'])) {
+            while (T_WHITESPACE === $tokens[$lastNextSpacePtr]['code'] && $lastNextSpacePtr < count($tokens)) {
+                $lastNextSpacePtr++;
+            }
         }
-        if ($tokens[$lastNextSpacePtr]['line'] <= $tokens[$lastCommentPtr]['line'] + 1) {
-            $error  = "Please add a blank line after comments counting more than {$this->longCommentLimit} lines.";
-            $phpcsFile->addError($error, $lastCommentPtr, 'LongCommentWithoutSpacing');
-            $hasBlankLinesAround = FALSE;
+        if (isset($tokens[$lastCommentPtr]['line']) && isset($tokens[$lastNextSpacePtr]['code'])) {
+            if ($tokens[$lastNextSpacePtr]['line'] <= $tokens[$lastCommentPtr]['line'] + 1) {
+                $error = "Please add a blank line after comments counting more than {$this->longCommentLimit} lines.";
+                $phpcsFile->addError($error, $lastCommentPtr, 'LongCommentWithoutSpacing');
+                $hasBlankLinesAround = FALSE;
+            }
         }
 
         return $hasBlankLinesAround;
