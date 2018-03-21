@@ -24,7 +24,13 @@
  * @license   http://thomas.ernest.fr/developement/php_cs/licence GNU General Public License
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
-class CodeIgniter_Sniffs_WhiteSpace_LogicalNotSpacingSniff implements PHP_CodeSniffer_Sniff
+
+namespace CodeIgniter\Sniffs\WhiteSpace;
+
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Files\File;
+
+class LogicalNotSpacingSniff implements Sniff
 {
 
     /**

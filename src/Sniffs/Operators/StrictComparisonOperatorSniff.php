@@ -25,7 +25,13 @@
  * @license   http://thomas.ernest.fr/developement/php_cs/licence GNU General Public License
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
-class CodeIgniter_Sniffs_Operators_StrictComparisonOperatorSniff implements PHP_CodeSniffer_Sniff
+
+namespace CodeIgniter\Sniffs\Operators;
+
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Files\File;
+
+class StrictComparisonOperatorSniff implements Sniff
 {
     private static $_replacements = array(
         T_IS_EQUAL     => '===',

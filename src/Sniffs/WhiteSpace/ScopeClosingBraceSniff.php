@@ -29,7 +29,14 @@
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
-class CodeIgniter_Sniffs_WhiteSpace_ScopeClosingBraceSniff implements PHP_CodeSniffer_Sniff
+
+namespace CodeIgniter\Sniffs\WhiteSpace;
+
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Util\Tokens;
+
+class ScopeClosingBraceSniff implements Sniff
 {
 
     /**
@@ -47,7 +54,7 @@ class CodeIgniter_Sniffs_WhiteSpace_ScopeClosingBraceSniff implements PHP_CodeSn
      */
     public function register()
     {
-        return PHP_CodeSniffer_Tokens::$scopeOpeners;
+        return Tokens::$scopeOpeners;
 
     }//end register()
 

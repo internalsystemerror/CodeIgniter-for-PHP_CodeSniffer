@@ -27,7 +27,13 @@
  * @license   http://thomas.ernest.fr/developement/php_cs/licence GNU General Public License
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
-class CodeIgniter_Sniffs_Strings_VariableUsageSniff implements PHP_CodeSniffer_Sniff
+
+namespace CodeIgniter\Sniffs\String;
+
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Files\File;
+
+class VariableUsageSniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.

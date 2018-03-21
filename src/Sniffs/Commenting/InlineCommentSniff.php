@@ -25,7 +25,13 @@
  * @license   http://thomas.ernest.fr/developement/php_cs/licence GNU General Public License
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
-class CodeIgniter_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Sniff
+
+namespace CodeIgniter\Sniffs\Commenting;
+
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Sniffs\File;
+
+class InlineCommentSniff implements Sniff
 {
     /**
      * @var int Limit defining long comments.

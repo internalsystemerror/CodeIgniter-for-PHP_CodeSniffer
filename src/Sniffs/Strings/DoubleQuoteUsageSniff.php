@@ -29,7 +29,13 @@
  * @license   http://thomas.ernest.fr/developement/php_cs/licence GNU General Public License
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
-class CodeIgniter_Sniffs_Strings_DoubleQuoteUsageSniff extends CodeIgniter_Sniffs_Strings_VariableUsageSniff
+
+namespace CodeIgniter\Sniffs\String;
+
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Files\File;
+
+class DoubleQuoteUsageSniff extends VariableUsageSniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
