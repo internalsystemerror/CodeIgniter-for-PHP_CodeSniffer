@@ -54,7 +54,7 @@ class CodeIgniter_Sniffs_NamingConventions_ConstructorNameSniff extends PHP_Code
     /**
      * Processes this test when one of its tokens is encountered.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The current file being scanned.
+     * @param File $phpcsFile The current file being scanned.
      * @param int                  $stackPtr  The position of the current token
      *                                        in the stack passed in $tokens.
      * @param int                  $currScope A pointer to the start of the scope.
@@ -62,7 +62,7 @@ class CodeIgniter_Sniffs_NamingConventions_ConstructorNameSniff extends PHP_Code
      * @return void
      */
     protected function processTokenWithinScope(
-        PHP_CodeSniffer_File $phpcsFile,
+        File $phpcsFile,
         $stackPtr,
         $currScope
     ) {

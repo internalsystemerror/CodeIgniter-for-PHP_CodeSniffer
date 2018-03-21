@@ -74,14 +74,14 @@ class CodeIgniter_Sniffs_NamingConventions_ValidMethodNameSniff extends PHP_Code
     /**
      * Processes the tokens within the scope.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being processed.
+     * @param File $phpcsFile The file being processed.
      * @param int                  $stackPtr  The position where this token was
      *                                        found.
      * @param int                  $currScope The position of the current scope.
      *
      * @return void
      */
-    protected function processTokenWithinScope(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $currScope)
+    protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope)
     {
         $methodName = $phpcsFile->getDeclarationName($stackPtr);
         if ($methodName === null) {

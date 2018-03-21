@@ -47,13 +47,13 @@ class CodeIgniter_Sniffs_Strings_DoubleQuoteUsageSniff extends CodeIgniter_Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The current file being scanned.
+     * @param File $phpcsFile The current file being scanned.
      * @param int                  $stackPtr  The position of the current token
      *                                        in the stack passed in $tokens.
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         // no variable are in the string from here
         $tokens = $phpcsFile->getTokens();
@@ -76,7 +76,7 @@ class CodeIgniter_Sniffs_Strings_DoubleQuoteUsageSniff extends CodeIgniter_Sniff
     /**
      * Processes this test, when the token encountered is a double-quoted string.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The current file being scanned.
+     * @param File $phpcsFile The current file being scanned.
      * @param int                  $stackPtr  The position of the current token
      *                                        in the stack passed in $tokens.
      * @param string               $qtString  The double-quoted string content,
@@ -84,7 +84,7 @@ class CodeIgniter_Sniffs_Strings_DoubleQuoteUsageSniff extends CodeIgniter_Sniff
      *
      * @return void
      */
-    protected function processDoubleQuotedString (PHP_CodeSniffer_File $phpcsFile, $stackPtr, $qtString)
+    protected function processDoubleQuotedString (File $phpcsFile, $stackPtr, $qtString)
     {
         // so there should be at least a single quote or a special char
         // if there are the 2 kinds of quote and no special char, then add a warning
@@ -109,7 +109,7 @@ class CodeIgniter_Sniffs_Strings_DoubleQuoteUsageSniff extends CodeIgniter_Sniff
     /**
      * Processes this test, when the token encountered is a single-quoted string.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The current file being scanned.
+     * @param File $phpcsFile The current file being scanned.
      * @param int                  $stackPtr  The position of the current token
      *                                        in the stack passed in $tokens.
      * @param string               $qtString  The single-quoted string content,
@@ -117,7 +117,7 @@ class CodeIgniter_Sniffs_Strings_DoubleQuoteUsageSniff extends CodeIgniter_Sniff
      *
      * @return void
      */
-    protected function processSingleQuotedString (PHP_CodeSniffer_File $phpcsFile, $stackPtr, $qtString)
+    protected function processSingleQuotedString (File $phpcsFile, $stackPtr, $qtString)
     {
         // if there is single quotes without additional double quotes,
         // then user is allowed to use double quote to avoid having to
