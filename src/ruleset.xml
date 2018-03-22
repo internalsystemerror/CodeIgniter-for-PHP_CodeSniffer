@@ -2,32 +2,42 @@
 <ruleset name="CodeIgniter">
   <description>CodeIgniter coding standard as described at http://codeigniter.com/user_guide/general/styleguide.html.</description>
 
-  <rule ref="CodeIgniter.NamingConventions.ValidVariableName">
-    <severity>1</severity>
-  </rule>
-  <rule ref="CodeIgniter.NamingConventions.ValidMethodName">
-    <severity>1</severity>
-  </rule>
-  <rule ref="CodeIgniter.Commenting.InlineComment.WrongStyle">
-    <type>warning</type>
-  </rule>
-  <rule ref="CodeIgniter.Commenting.InlineComment.LongCommentWithoutSpacing">
-    <type>warning</type>
-  </rule>
-  <rule ref="CodeIgniter.Strings.DoubleQuoteUsage">
-    <type>warning</type>
-  </rule>
   <rule ref="CodeIgniter.Files.ClosingLocationComment">
-    <type>warning</type>
+    <properties>
+      <!-- End of the path pointing to your project's application root or all of it. -->
+      <property name="applicationRoot" value="/application/"/>
+    </properties>
   </rule>
+
   <rule ref="Generic.Files.LineEndings">
     <properties>
       <property name="eolChar" value="\n"/>
     </properties>
   </rule>
 
+  <rule ref="CodeIgniter.NamingConventions.ValidVariableName">
+    <severity>1</severity>
+  </rule>
+
+  <rule ref="CodeIgniter.NamingConventions.ValidMethodName">
+    <severity>1</severity>
+  </rule>
+
+  <rule ref="CodeIgniter.Commenting.InlineComment.WrongStyle">
+    <type>warning</type>
+  </rule>
+
+  <rule ref="CodeIgniter.Commenting.InlineComment.LongCommentWithoutSpacing">
+    <type>warning</type>
+  </rule>
+
+  <rule ref="CodeIgniter.Strings.DoubleQuoteUsage">
+    <type>warning</type>
+  </rule>
+
   <!-- PHP files should OMIT the closing PHP tag -->
   <rule ref="Zend.Files.ClosingTag"/>
+
   <!-- Always use full PHP opening tags -->
   <rule ref="Generic.PHP.DisallowShortOpenTag"/>
 
