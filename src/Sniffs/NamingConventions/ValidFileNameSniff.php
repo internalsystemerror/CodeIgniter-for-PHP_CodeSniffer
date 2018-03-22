@@ -83,7 +83,7 @@ class ValidFileNameSniff implements Sniff
                 $decName,
                 $expectedFileName
             );
-            $phpcsFile->addError($errorMessage, 0);
+            $phpcsFile->addError($errorMessage, 0, '');
         }
     }//end process()
 }//end class

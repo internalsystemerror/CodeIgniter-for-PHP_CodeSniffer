@@ -102,19 +102,19 @@ class VariableUsageSniff implements Sniff
                         $this->_parseVariable($strTokens, $strPtr);
                     } catch (Exception $err) {
                         $error = 'There is no variable, object nor array between curly braces. Please use the escape char for $ or {.';
-                        $phpcsFile->addError($error, $stackPtr);
+                        $phpcsFile->addError($error, $stackPtr, '');
                     }
                     $variableFound = TRUE;
                     if ('}' !== $strTokens[$strPtr]) {
                         $error = 'There is no matching closing curly brace.';
-                        $phpcsFile->addError($error, $stackPtr);
+                        $phpcsFile->addError($error, $stackPtr, '');
                     }
                     // don't move forward, since it will be done in the main loop
                     // $strPtr++;
                 } else if (T_VARIABLE === $strToken[0]) {
                     $variableFound = TRUE;
                     $error = "Variable {$strToken[1]} in double-quoted strings should be enclosed with curly braces. Please consider {{$strToken[1]}}";
-                    $phpcsFile->addError($error, $stackPtr);
+                    $phpcsFile->addError($error, $stackPtr, '');
                 }
             }
             $strPtr++;
@@ -144,7 +144,7 @@ class VariableUsageSniff implements Sniff
             if (is_array($strToken)) {
                 if (T_VARIABLE === $strToken[0]) {
                     $error = "Variables like {$strToken[1]} should be in double-quoted strings only.";
-                    $phpcsFile->addError($error, $stackPtr);
+                    $phpcsFile->addError($error, $stackPtr, '');
                 }
             }
             $strPtr++;

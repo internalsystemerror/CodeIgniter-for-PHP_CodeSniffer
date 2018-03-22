@@ -177,7 +177,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
             $error = $error . 'Please consider "' . $expectedVarName
                 . '" instead of "' . $varName . '".';
             // adds the error and changes return value
-            $phpcsFile->addError($error, $stackPtr);
+            $phpcsFile->addError($error, $stackPtr, '');
             $isInLowerCase = false;
         }
         return $isInLowerCase;
@@ -208,7 +208,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
         // If it's a private variable, it must have an underscore on the front.
         if ($scope === 'private' && $varName{0} !== '_') {
             $error = "Private variable name \"$varName\" must be prefixed with an underscore";
-            $phpcsFile->addError($error, $stackPtr);
+            $phpcsFile->addError($error, $stackPtr, '');
             $isVisibilityPrefixRight = false;
         } else if ($scope !== 'private' && $varName{0} === '_') {
             // If it's not a private variable,
@@ -218,7 +218,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
             } else {
                 $error = ucfirst($scope) . " variable name \"$varName\" must not be prefixed with an underscore";
             }
-            $phpcsFile->addError($error, $stackPtr);
+            $phpcsFile->addError($error, $stackPtr, '');
             $isVisibilityPrefixRight = false;
         }
         return $isVisibilityPrefixRight;
@@ -271,7 +271,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
                 )
                 . ', non-word variables like "' . $varName
                 . '" should only be used as iterators in for() loops.';
-            $phpcsFile->addError($error, $stackPtr);
+            $phpcsFile->addError($error, $stackPtr, '');
             $isLengthRight = false;
         }
         return $isLengthRight;

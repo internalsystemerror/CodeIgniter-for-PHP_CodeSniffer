@@ -70,15 +70,15 @@ class Utf8EncodingSniff implements Sniff
         $file_content = file_get_contents($file_path);
         if (false === mb_check_encoding($file_content, 'UTF-8')) {
             $error = 'File "' . $file_name . '" should be saved with Unicode (UTF-8) encoding.';
-            $phpcsFile->addError($error, 0);
+            $phpcsFile->addError($error, 0, '');
         }
         if ( ! self::_checkUtf8W3c($file_content)) {
             $error = 'File "' . $file_name . '" should be saved with Unicode (UTF-8) encoding, but it did not successfully pass the W3C test.';
-            $phpcsFile->addError($error, 0);
+            $phpcsFile->addError($error, 0, '');
         }
         if ( ! self::_checkUtf8Rfc3629($file_content)) {
             $error = 'File "' . $file_name . '" should be saved with Unicode (UTF-8) encoding, but it did not meet RFC3629 requirements.';
-            $phpcsFile->addError($error, 0);
+            $phpcsFile->addError($error, 0, '');
         }
     }//end process()
 

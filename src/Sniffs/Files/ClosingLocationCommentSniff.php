@@ -42,6 +42,8 @@ namespace CodeIgniter\Sniffs\Files;
 
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+//use PHP_CodeSniffer\Util\Common;
+use PHP_CodeSniffer\Config;
 
 class ClosingLocationCommentSniff extends AbstractClosingCommentSniff
 {
@@ -86,7 +88,7 @@ class ClosingLocationCommentSniff extends AbstractClosingCommentSniff
         // add an error, if application root doesn't exist in current file path
         if (false === $locationPath) {
             $error = 'Unable to find "' . $this->_getAppRoot() . '" in file path "' . $filePath . '". Please set your project\'s application root.';
-            $phpcsFile->addError($error, count($tokens) - 1);
+            $phpcsFile->addError($error, count($tokens) - 1, '');
             return;
         }
         // generates the expected comment
@@ -117,7 +119,7 @@ class ClosingLocationCommentSniff extends AbstractClosingCommentSniff
 
         if ( ! $hasClosingLocationComment) {
             $error = 'No comment block marks the end of file instead of the closing PHP tag. Please add a comment block containing only "' . $commentTemplate . '".';
-            $phpcsFile->addError($error, $currentToken);
+            $phpcsFile->addError($error, $currentToken, 'ClosingLocationComment');
         }
     }//end process()
 
@@ -171,7 +173,7 @@ class ClosingLocationCommentSniff extends AbstractClosingCommentSniff
      */
     private function _getAppRoot()
     {
-        $appRoot = PHP_CodeSniffer::getConfigData('ci_application_root');
+        $appRoot = Config::getConfigData('ci_application_root');
         if (null === $appRoot) {
             $appRoot = $this->applicationRoot;
         }

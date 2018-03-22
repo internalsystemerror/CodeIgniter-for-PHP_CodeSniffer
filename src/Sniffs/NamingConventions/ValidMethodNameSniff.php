@@ -98,7 +98,7 @@ class ValidMethodNameSniff extends AbstractScopeSniff
             $magicPart = substr($methodName, 2);
             if (in_array($magicPart, self::$magicMethods) === false) {
                  $error = "Method name \"$className::$methodName\" is invalid; only PHP magic methods should be prefixed with a double underscore";
-                 $phpcsFile->addError($error, $stackPtr);
+                 $phpcsFile->addError($error, $stackPtr, '');
             }
 
             return;
@@ -118,7 +118,7 @@ class ValidMethodNameSniff extends AbstractScopeSniff
             $uscrdMethodName = preg_replace('/([A-Z])/', '_${1}', $methodName);
             $expectedMethodName = strtolower($uscrdMethodName);
             $error = "Class methods should be entirely lowercased. Please consider \"$expectedMethodName\" instead of \"$methodName\".";
-            $phpcsFile->addError($error, $stackPtr);
+            $phpcsFile->addError($error, $stackPtr, '');
             return;
         }
 
@@ -129,7 +129,7 @@ class ValidMethodNameSniff extends AbstractScopeSniff
         // If it's a private method, it must have an underscore on the front.
         if ($scope === 'private' && $methodName{0} !== '_') {
             $error = "Private method name \"$className::$methodName\" must be prefixed with an underscore";
-            $phpcsFile->addError($error, $stackPtr);
+            $phpcsFile->addError($error, $stackPtr, '');
             return;
         }
 
@@ -140,7 +140,7 @@ class ValidMethodNameSniff extends AbstractScopeSniff
             } else {
                 $error = ucfirst($scope)." method name \"$className::$methodName\" must not be prefixed with an underscore";
             }
-            $phpcsFile->addError($error, $stackPtr);
+            $phpcsFile->addError($error, $stackPtr, '');
             return;
         }
 
@@ -150,13 +150,17 @@ class ValidMethodNameSniff extends AbstractScopeSniff
         $warning_limit = 35;
         if (strlen($methodName) > $error_limit) {
             $error = "Overly long and verbose names are prohibited. Please find a name shorter than $error_limit chars.";
-            $phpcsFile->addError($error, $stackPtr);
+            $phpcsFile->addError($error, $stackPtr, '');
             return;
         } else if (strlen($methodName) > $warning_limit) {
             $warning = "Try to avoid overly long and verbose names in finding a name shorter than $warning_limit chars.";
-            $phpcsFile->addWarning($warning, $stackPtr);
+            $phpcsFile->addWarning($warning, $stackPtr, '');
         }
     }//end processTokenWithinScope()
+
+    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
+    {
+    }
 
 }//end class
 

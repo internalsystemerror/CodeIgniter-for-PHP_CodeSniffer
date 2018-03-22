@@ -102,7 +102,7 @@ class DoubleQuoteUsageSniff extends VariableUsageSniff
             && false === $smpl_qt_at
         ) {
             $error = 'Single-quoted strings should be used unless it contains variables, special chars like \n or single quotes.';
-            $phpcsFile->addError($error, $stackPtr);
+            $phpcsFile->addError($error, $stackPtr, '');
         } else if (false !== $smpl_qt_at && false !== $dbl_qt_at
             && false === $has_variable && false === $has_specific_sequence
         ) {

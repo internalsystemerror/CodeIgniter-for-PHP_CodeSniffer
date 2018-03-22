@@ -67,14 +67,14 @@ class UppercaseLogicalOperatorOrSniff implements Sniff
         if ($operator_code == T_BOOLEAN_OR) {
             $error_message = 'Logical operator "' . $operator_string
                 . '" is prohibited; use "OR" instead';
-            $phpcsFile->addError($error_message, $stackPtr);
+            $phpcsFile->addError($error_message, $stackPtr, '');
         }
         // it is literal, if it is not symbolic
         else if ($operator_string !== strtoupper($operator_string)) {
             $error_message = 'Logical operator should be in upper case;'
                 . ' use "' . strtoupper($operator_string)
                 . '" instead of "' . $operator_string . '"';
-            $phpcsFile->addError($error_message, $stackPtr);
+            $phpcsFile->addError($error_message, $stackPtr, '');
         }
     }//end process()
 

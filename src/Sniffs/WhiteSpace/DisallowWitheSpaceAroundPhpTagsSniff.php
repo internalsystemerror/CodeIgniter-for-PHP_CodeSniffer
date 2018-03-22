@@ -72,7 +72,7 @@ class DisallowWitheSpaceAroundPhpTagsSniff implements Sniff
             $isFirst = 0 === $stackPtr;
             if ( ! $isFirst) {
                 $error = 'Any char before the opening PHP tag is prohibited. Please remove newline or indentation before the opening PHP tag.';
-                $phpcsFile->addError($error, $stackPtr);
+                $phpcsFile->addError($error, $stackPtr, '');
             }
         } else {
             // if (T_CLOSE_TAG === $php_tag_code)
@@ -84,7 +84,7 @@ class DisallowWitheSpaceAroundPhpTagsSniff implements Sniff
             $containsEndTagOnly = strlen($php_tag_string) > 2;
             if ( ! $isLast || ! $containsEndTagOnly ) {
                 $error = 'Any char after the closing PHP tag is prohibited. Please removes newline or spaces after the closing PHP tag.';
-                $phpcsFile->addError($error, $stackPtr);
+                $phpcsFile->addError($error, $stackPtr, '');
             }
         }
     }//end process()

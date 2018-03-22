@@ -76,12 +76,12 @@ class ConstructorNameSniff extends AbstractScopeSniff
         if ($this->php5Constructors != '0') {
             if ($isPhp4Constructor) {
                 $error = "PHP4 style constructors are not allowed; use \"__construct\" instead";
-                $phpcsFile->addError($error, $stackPtr);
+                $phpcsFile->addError($error, $stackPtr, '');
             }
         } else {
             if ($isPhp5Constructor) {
                 $error = "PHP5 style constructors are not allowed; use \"$className\" instead";
-                $phpcsFile->addError($error, $stackPtr);
+                $phpcsFile->addError($error, $stackPtr, '');
             }
         }
         if ( ! $isPhp4Constructor && ! $isPhp5Constructor ) {
@@ -122,7 +122,7 @@ class ConstructorNameSniff extends AbstractScopeSniff
             if ($tokens[($doubleColonIndex + 1)]['code'] === T_STRING
                 && $tokens[($doubleColonIndex + 1)]['content'] === $wrongConstructor
             ) {
-                $phpcsFile->addError($error, ($doubleColonIndex + 1));
+                $phpcsFile->addError($error, ($doubleColonIndex + 1), '');
             }
 
             $doubleColonIndex = $phpcsFile->findNext(
@@ -134,6 +134,9 @@ class ConstructorNameSniff extends AbstractScopeSniff
 
     }//end processTokenWithinScope()
 
+    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
+    {
+    }
 
 }//end class
 

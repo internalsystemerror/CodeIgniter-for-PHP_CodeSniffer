@@ -103,7 +103,7 @@ class ClosingFileCommentSniff extends AbstractClosingCommentSniff
 
         if ( ! $hasClosingFileComment) {
             $error = 'No comment block marks the end of file instead of the closing PHP tag. Please add a comment block containing only "' . $commentTemplate . '".';
-            $phpcsFile->addError($error, $currentToken);
+            $phpcsFile->addError($error, $currentToken, 'ClosingFileComment');
         }
     }//end process()
 }//end class

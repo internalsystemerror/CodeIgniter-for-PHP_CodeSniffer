@@ -79,7 +79,7 @@ class ValidClassNameSniff implements Sniff
         // and the expected class name are identical
         if (0 !== strcmp($className, $expectedClassName)) {
             $error =  'Class names should always have their first letter uppercase. Multiple words should be separated with an underscore, and not CamelCased. Please consider ' . $expectedClassName . ' instead of ' . $className . '.';
-            $phpcsFile->addError($error, $stackPtr);
+            $phpcsFile->addError($error, $stackPtr, '');
         }
     }//end process()
 
