@@ -29,7 +29,7 @@
 namespace CodeIgniter\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Sniffs\File;
+use PHP_CodeSniffer\Files\File;
 
 class InlineCommentSniff implements Sniff
 {
