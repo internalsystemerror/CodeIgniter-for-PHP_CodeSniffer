@@ -31,7 +31,7 @@ validate most of the rules in CodeIgniter coding standard.
 
 configure PHP_CodeSniffer to use CodeIgniter-for-PHP_CodeSniffer.
 
-`phpcs --configure-set installed_paths /path/to/CodeIgniter-for-PHP_CodeSniffer/CodeIgniter`
+`phpcs --config-set installed_paths /path/to/CodeIgniter-for-PHP_CodeSniffer/CodeIgniter`
 
 Check that it is installed type `phpcs -i` you should see a list of installed standards.
 
