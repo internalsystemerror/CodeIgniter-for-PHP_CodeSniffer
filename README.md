@@ -37,6 +37,10 @@ Check that it is installed type `phpcs -i` you should see a list of installed st
 
 Then you can go to you project folder and run `phpcs --standard=CodeIgniter my-file-or-my-directory.php`.
 
+## Enable integration in PhpStorm
+
+![screenshot](https://github.com/ganl/mdAssets/raw/master/img/CodeIgniter3-Standard/code-standard.png)
+![screenshot](https://github.com/ganl/mdAssets/raw/master/img/CodeIgniter3-Standard/codesniffer-effect.png)
 
 [PHP_CodeSniffer]: https://github.com/squizlabs/PHP_CodeSniffer
 [codesniffer-www]: http://www.squizlabs.com/php-codesniffer

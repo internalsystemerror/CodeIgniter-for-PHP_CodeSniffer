@@ -42,6 +42,7 @@ namespace CodeIgniter\Sniffs\NamingConventions;
 
 use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Exceptions\TokenizerException;
 
 class ValidVariableNameSniff extends AbstractVariableSniff
 {
@@ -500,7 +501,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
         $tokens = $phpcsFile->getTokens();
         $forTk = $tokens[$forPtr];
         if (T_FOR !== $forTk['code']) {
-            throw new PHP_CodeSniffer_Exception('$forPtr must be of type T_FOR');
+            throw new TokenizerException('$forPtr must be of type T_FOR');
         }
         $openParPtr = $forTk['parenthesis_opener'];
         $openParenthesisTk = $tokens[$openParPtr];

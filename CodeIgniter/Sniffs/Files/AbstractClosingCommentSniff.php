@@ -31,6 +31,7 @@ namespace CodeIgniter\Sniffs\Files;
 
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Exceptions\TokenizerException;
 
 class AbstractClosingCommentSniff implements Sniff
 {
@@ -48,7 +49,7 @@ class AbstractClosingCommentSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
       $error = __CLASS__.'::'.__METHOD__.' is abstract. Please develop this method in a child class.';
-      throw new PHP_CodeSniffer_Exception($error);
+      throw new TokenizerException($error);
     }
 
     /**

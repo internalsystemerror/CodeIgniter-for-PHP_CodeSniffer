@@ -30,6 +30,7 @@
 
 namespace CodeIgniter\Sniffs\String;
 
+use \Exception;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
 
