@@ -28,7 +28,7 @@
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
-namespace CodeIgniter\Sniffs\String;
+namespace CodeIgniter\Sniffs\Strings;
 
 use \Exception;
 use PHP_CodeSniffer\Sniffs\Sniff;

@@ -30,7 +30,7 @@
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
-namespace CodeIgniter\Sniffs\String;
+namespace CodeIgniter\Sniffs\Strings;
 
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
