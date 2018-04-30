@@ -107,7 +107,7 @@ class DoubleQuoteUsageSniff extends VariableUsageSniff
             && false === $has_variable && false === $has_specific_sequence
         ) {
             $warning = 'It is encouraged to use a single-quoted string, since it doesn\'t contain any variable nor special char though it mixes single and double quotes.';
-            $phpcsFile->addWarning($warning, $stackPtr);
+            $phpcsFile->addWarning($warning, $stackPtr, '');
         }
     }//end processDoubleQuotedString()
 
