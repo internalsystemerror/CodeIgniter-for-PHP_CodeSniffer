@@ -135,7 +135,7 @@ class DoubleQuoteUsageSniff extends VariableUsageSniff
         $smpl_qt_at = strpos($qtString, "'");
         if (false === $has_variable && false !== $smpl_qt_at && false === $dbl_qt_at) {
             $warning = 'You may also use double-quoted strings if the string contains single quotes, so you do not have to use escape characters.';
-            $phpcsFile->addWarning($warning, $stackPtr);
+            $phpcsFile->addWarning($warning, $stackPtr, '');
         }
     }//end processSingleQuotedString()
 
