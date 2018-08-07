@@ -21,7 +21,7 @@
     "require-dev": {
         "ise/php-metapackage-development": "^2.0.3"
     },
-    "autoload-dev": {
+    "autoload": {
         "psr-4": {
             "CodeIgniter\\": "CodeIgniter/"
         }
