@@ -1,5 +1,5 @@
 {
-    "name": "ise/phpcs-codeigniter",
+    "name": "ise/php-codingstandards-codeigniter",
     "description": "CodeIgniter coding standards for PHPCS",
     "type": "library",
     "license": "BSD-3-Clause",
