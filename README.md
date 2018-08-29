@@ -1,5 +1,14 @@
 # CodeIgniter-for-PHP_CodeSniffer
 
+Original Repos:
+- https://github.com/thomas-ernest/CodeIgniter-for-PHP_CodeSniffer
+- https://github.com/ganl/CodeIgniter-for-PHP_CodeSniffer
+
+Usage:
+```
+composer require ise/php-codingstandards-codeigniter:^1.0.0
+```
+
 Provides sniffs for [PHP_CodeSniffer 3.x][PHP_CodeSniffer] to check [CodeIgniter3 coding standard][styleguide].
 
 CI4 can use [CodeIgniter4 standard][CodeIgniter4-Standard] to check [CodeIgniter4 coding standard][CodeIgniter4-styleguide]

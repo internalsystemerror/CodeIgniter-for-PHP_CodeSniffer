@@ -130,7 +130,7 @@ class ClosingLocationCommentSniff extends AbstractClosingCommentSniff
      * of $filePath.
      *
      * @param string $filePath Full path to the file being proceed.
-     * @param string $appRoot  Partial or full path to the CodeIgniter
+     * @param string $appRoot  Partial or full path to the src
      * application root of the file being proceed. It must not contain the
      * full path to the application root, but at least the name of the
      * application root. Parent directory of the application root are allowed
