@@ -1,7 +1,6 @@
 <?php
 /**
  * CodeIgniter_Sniffs_NamingConventions_ValidFileNameSniff.
- *
  * PHP version 5
  *
  * @category  PHP
@@ -14,7 +13,6 @@
 
 /**
  * CodeIgniter_Sniffs_NamingConventions_ValidFileNameSniff.
- *
  * Tests that the file name matchs the name of the class  that it contains in lower case.
  *
  * @category  PHP
@@ -27,11 +25,12 @@
 
 namespace CodeIgniter\Sniffs\NamingConventions;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class ValidFileNameSniff implements Sniff
 {
+
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -39,18 +38,17 @@ class ValidFileNameSniff implements Sniff
      */
     public function register()
     {
-        return array(
+        return [
             T_CLASS,
             T_INTERFACE,
-        );
+        ];
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token in the
+     * @param File $phpcsFile                 The file being scanned.
+     * @param int  $stackPtr                  The position of the current token in the
      *                                        stack passed in $tokens.
      *
      * @return void
@@ -60,23 +58,23 @@ class ValidFileNameSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         // computes the expected filename based on the name of the class or interface that it contains.
         $decNamePtr = $phpcsFile->findNext(T_STRING, $stackPtr);
-        $decName = $tokens[$decNamePtr]['content'];
+        $decName    = $tokens[$decNamePtr]['content'];
 
         // Handle MY_ core files differently
-        if(substr($decName, 0, 3) === 'MY_') {
-            $expectedFileName = 'MY_'.ucfirst(strtolower(str_replace('MY_','',$decName)));
+        if (substr($decName, 0, 3) === 'MY_') {
+            $expectedFileName = 'MY_' . ucfirst(strtolower(str_replace('MY_', '', $decName)));
         } else {
             $expectedFileName = ucfirst(strtolower($decName));
         }
 
         // extracts filename without extension from its path.
-        $fullPath = $phpcsFile->getFilename();
+        $fullPath       = $phpcsFile->getFilename();
         $fileNameAndExt = basename($fullPath);
-        $fileName = substr($fileNameAndExt, 0, strrpos($fileNameAndExt, '.'));
+        $fileName       = substr($fileNameAndExt, 0, strrpos($fileNameAndExt, '.'));
 
         if ($expectedFileName !== $fileName) {
             $errorTemplate = 'Filename "%s" doesn\'t match the name of the %s that it contains "%s" in ucfirst case. "%s" was expected.';
-            $errorMessage = sprintf(
+            $errorMessage  = sprintf(
                 $errorTemplate,
                 $fileName,
                 strtolower($tokens[$stackPtr]['content']), // class or interface
@@ -87,5 +85,3 @@ class ValidFileNameSniff implements Sniff
         }
     }//end process()
 }//end class
-
-?>

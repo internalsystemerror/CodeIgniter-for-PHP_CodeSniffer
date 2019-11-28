@@ -1,7 +1,6 @@
 <?php
 /**
  * CodeIgniter_Sniffs_NamingConventions_ConstructorNameSniff.
- *
  * PHP version 5
  *
  * @category  PHP
@@ -12,15 +11,12 @@
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
-
 /**
  * CodeIgniter_Sniffs_NamingConventions_ConstructorNameSniff.
- *
  * Favor PHP 4 constructor syntax, which uses "function ClassName()".
  * Avoid PHP 5 constructor syntax, which uses "function __construct()".
  *
- * @todo Try to avoid overly long and verbose names.
- *
+ * @todo      Try to avoid overly long and verbose names.
  * @category  PHP
  * @package   PHP_CodeSniffer
  * @author    Thomas Ernest <thomas.ernest@gmail.com>
@@ -31,15 +27,16 @@
 
 namespace CodeIgniter\Sniffs\NamingConventions;
 
-use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
 
 class ConstructorNameSniff extends AbstractScopeSniff
 {
 
-
+    /**
+     * @var string
+     */
     public $php5Constructors = '1';
-
 
     /**
      * Constructs the test with the tokens it wishes to listen for.
@@ -48,18 +45,16 @@ class ConstructorNameSniff extends AbstractScopeSniff
      */
     public function __construct()
     {
-        parent::__construct(array(T_CLASS, T_INTERFACE), array(T_FUNCTION), true);
-
+        parent::__construct([T_CLASS, T_INTERFACE], [T_FUNCTION], true);
     }//end __construct()
-
 
     /**
      * Processes this test when one of its tokens is encountered.
      *
-     * @param File $phpcsFile The current file being scanned.
-     * @param int                  $stackPtr  The position of the current token
+     * @param File $phpcsFile                 The current file being scanned.
+     * @param int  $stackPtr                  The position of the current token
      *                                        in the stack passed in $tokens.
-     * @param int                  $currScope A pointer to the start of the scope.
+     * @param int  $currScope                 A pointer to the start of the scope.
      *
      * @return void
      */
@@ -71,8 +66,8 @@ class ConstructorNameSniff extends AbstractScopeSniff
         $methodName = $phpcsFile->getDeclarationName($stackPtr);
         $className  = $phpcsFile->getDeclarationName($currScope);
 
-	$isPhp4Constructor = strcasecmp($methodName, $className) === 0;
-	$isPhp5Constructor = strcasecmp($methodName, '__construct') === 0;
+        $isPhp4Constructor = strcasecmp($methodName, $className) === 0;
+        $isPhp5Constructor = strcasecmp($methodName, '__construct') === 0;
         if ($this->php5Constructors != '0') {
             if ($isPhp4Constructor) {
                 $error = "PHP4 style constructors are not allowed; use \"__construct\" instead";
@@ -84,13 +79,13 @@ class ConstructorNameSniff extends AbstractScopeSniff
                 $phpcsFile->addError($error, $stackPtr, '');
             }
         }
-        if ( ! $isPhp4Constructor && ! $isPhp5Constructor ) {
+        if (!$isPhp4Constructor && !$isPhp5Constructor) {
             return;
         }
 
         $tokens = $phpcsFile->getTokens();
 
-        $parentClassName = $phpcsFile->findExtendedClassName($currScope);
+        $parentClassName  = $phpcsFile->findExtendedClassName($currScope);
         $wrongConstructor = '';
         // prepares the error message and wrong constructor
         if ($this->php5Constructors != '0') {
@@ -114,7 +109,7 @@ class ConstructorNameSniff extends AbstractScopeSniff
         // looks for the use of a wrong constructor.
         $endFunctionIndex = $tokens[$stackPtr]['scope_closer'];
         $doubleColonIndex = $phpcsFile->findNext(
-            array(T_DOUBLE_COLON),
+            [T_DOUBLE_COLON],
             $stackPtr,
             $endFunctionIndex
         );
@@ -126,18 +121,14 @@ class ConstructorNameSniff extends AbstractScopeSniff
             }
 
             $doubleColonIndex = $phpcsFile->findNext(
-                array(T_DOUBLE_COLON),
+                [T_DOUBLE_COLON],
                 $doubleColonIndex + 1,
                 $endFunctionIndex
             );
         }
-
     }//end processTokenWithinScope()
 
     protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
     {
     }
-
 }//end class
-
-?>

@@ -1,7 +1,6 @@
 <?php
 /**
  * CodeIgniter_Sniffs_WhiteSpace_DisallowSpaceIndentSniff.
- *
  * PHP version 5
  *
  * @category  PHP
@@ -14,7 +13,6 @@
 
 /**
  * CodeIgniter_Sniffs_WhiteSpace_DisallowSpaceIndentSniff.
- *
  * Ensures the use of tabs for indentation.
  *
  * @category  PHP
@@ -27,8 +25,8 @@
 
 namespace CodeIgniter\Sniffs\WhiteSpace;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class DisallowSpaceIndentSniff implements Sniff
 {
@@ -38,12 +36,11 @@ class DisallowSpaceIndentSniff implements Sniff
      *
      * @var array
      */
-    public $supportedTokenizers = array(
-                                   'PHP',
-                                   'JS',
-                                   'CSS',
-                                  );
-
+    public $supportedTokenizers = [
+        'PHP',
+        'JS',
+        'CSS',
+    ];
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -52,15 +49,14 @@ class DisallowSpaceIndentSniff implements Sniff
      */
     public function register()
     {
-        return array(T_WHITESPACE);
+        return [T_WHITESPACE];
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile All the tokens found in the document.
-     * @param int                  $stackPtr  The position of the current token
+     * @param File $phpcsFile                 All the tokens found in the document.
+     * @param int  $stackPtr                  The position of the current token
      *                                        in the stack passed in $tokens.
      *
      * @return void
@@ -80,8 +76,4 @@ class DisallowSpaceIndentSniff implements Sniff
             $phpcsFile->addError($error, $stackPtr, '');
         }
     }//end process()
-
-
 }//end class
-
-?>

@@ -1,13 +1,13 @@
 <documentation title="Variable names">
     <standard>
-    <![CDATA[
+        <![CDATA[
     Namely, variables should contain only lowercase letters, use underscore separators, and be reasonably named to indicate their purpose and contents. Very short, non-word variables should only be used as iterators in for() loops.
     Methods and variables that are only accessed internally by your class, such as utility and helper functions that your public methods use for code abstraction, should be prefixed with an underscore.
     ]]>
     </standard>
     <code_comparison>
         <code title="Examples of valid variable names">
-        <![CDATA[
+            <![CDATA[
 for ($j = 0; $j < 10; $j++)
 $str
 $buffer
@@ -17,7 +17,7 @@ private $_internal_data;
         ]]>
         </code>
         <code title="Examples of invalid variable names">
-        <![CDATA[
+            <![CDATA[
 $j = 'foo'; // single letter variables should only be used in for() loops
 $Str // contains uppercase letters
 $bufferedText // uses CamelCasing, and could be shortened without losing semantic meaning

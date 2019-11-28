@@ -1,7 +1,6 @@
 <?php
 /**
  * CodeIgniter_Sniffs_Files_ClosingLocationCommentSniff.
- *
  * PHP version 5
  *
  * @category  PHP
@@ -12,20 +11,16 @@
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
-
 /**
  * CodeIgniter_Sniffs_Files_ClosingLocationCommentSniff.
- *
  * Ensures that a comment containing the file location exists at the end of file.
  * Only other comments and whitespaces are allowed between this comment and
  * the end of file.
- *
  * It may be all kind of comment like multi-line and inline C-style comments as
  * well as PERL-style comments. Any number of white may separate comment delimiters
  * from comment content. However, content has to be equal to template
  * "Location: <file_path_relative_to_application_root>".
  * Comparison between content and template is case-sensitive.
- *
  * There are several ways to configure the application root. In order of priority :
  *   - Configuration variable ci_application_root.
  *   - Rule property applicationRoot.
@@ -38,15 +33,20 @@
  * @license   http://thomas.ernest.fr/developement/php_cs/licence GNU General Public License
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
+
 namespace CodeIgniter\Sniffs\Files;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Files\File;
-//use PHP_CodeSniffer\Util\Common;
 use PHP_CodeSniffer\Config;
+use PHP_CodeSniffer\Files\File;
+
+//use PHP_CodeSniffer\Util\Common;
 
 class ClosingLocationCommentSniff extends AbstractClosingCommentSniff
 {
+
+    /**
+     * @var string
+     */
     public $applicationRoot = '/application/';
 
     /**
@@ -56,18 +56,16 @@ class ClosingLocationCommentSniff extends AbstractClosingCommentSniff
      */
     public function register()
     {
-        return array(
-            T_OPEN_TAG
-        );
-
+        return [
+            T_OPEN_TAG,
+        ];
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile The current file being scanned.
-     * @param int                  $stackPtr  The position of the current token
+     * @param File $phpcsFile                 The current file being scanned.
+     * @param int  $stackPtr                  The position of the current token
      *                                        in the stack passed in $tokens.
      *
      * @return void
@@ -82,47 +80,50 @@ class ClosingLocationCommentSniff extends AbstractClosingCommentSniff
         }
 
         $filePath = $phpcsFile->getFilename();
-        $tokens = $phpcsFile->getTokens();
+        $tokens   = $phpcsFile->getTokens();
         // removes the application root from the beginning of the file path
         $locationPath = self::_getLocationPath($filePath, $this->_getAppRoot());
         // add an error, if application root doesn't exist in current file path
         if (false === $locationPath) {
-            $error = 'Unable to find "' . $this->_getAppRoot() . '" in file path "' . $filePath . '". Please set your project\'s application root.';
+            $error = 'Unable to find "' . $this->_getAppRoot(
+            ) . '" in file path "' . $filePath . '". Please set your project\'s application root.';
             $phpcsFile->addError($error, count($tokens) - 1, '');
+
             return;
         }
         // generates the expected comment
         $commentTemplate = "Location: $locationPath";
 
-        $currentToken = count($tokens) - 1;
-        $hasClosingLocationComment = false;
+        $currentToken               = count($tokens) - 1;
+        $hasClosingLocationComment  = false;
         $isNotAWhitespaceOrAComment = false;
         while ($currentToken >= 0
-            && ! $isNotAWhitespaceOrAComment
-            && ! $hasClosingLocationComment
+               && !$isNotAWhitespaceOrAComment
+               && !$hasClosingLocationComment
         ) {
-            $token = $tokens[$currentToken];
+            $token     = $tokens[$currentToken];
             $tokenCode = $token['code'];
             if (T_COMMENT === $tokenCode) {
                 $commentString = self::_getCommentContent($token['content']);
                 if (0 === strcmp($commentString, $commentTemplate)) {
                     $hasClosingLocationComment = true;
                 }
-            } else if (T_WHITESPACE === $tokenCode) {
-                // Whitespaces are allowed between the closing file comment,
-                //other comments and end of file
             } else {
-                $isNotAWhitespaceOrAComment = true;
+                if (T_WHITESPACE === $tokenCode) {
+                    // Whitespaces are allowed between the closing file comment,
+                    //other comments and end of file
+                } else {
+                    $isNotAWhitespaceOrAComment = true;
+                }
             }
             $currentToken--;
         }
 
-        if ( ! $hasClosingLocationComment) {
+        if (!$hasClosingLocationComment) {
             $error = 'No comment block marks the end of file instead of the closing PHP tag. Please add a comment block containing only "' . $commentTemplate . '".';
             $phpcsFile->addError($error, $currentToken, 'ClosingLocationComment');
         }
     }//end process()
-
 
     /**
      * Returns the relative path from $appRoot to $filePath, or false if
@@ -131,15 +132,15 @@ class ClosingLocationCommentSniff extends AbstractClosingCommentSniff
      *
      * @param string $filePath Full path to the file being proceed.
      * @param string $appRoot  Partial or full path to the src
-     * application root of the file being proceed. It must not contain the
-     * full path to the application root, but at least the name of the
-     * application root. Parent directory of the application root are allowed
-     * but not mandatory.
+     *                         application root of the file being proceed. It must not contain the
+     *                         full path to the application root, but at least the name of the
+     *                         application root. Parent directory of the application root are allowed
+     *                         but not mandatory.
      *
      * @return string|bool The relative path from $appRoot to $filePath, or
      * false if $appRoot cannot be found in $filePath.
      */
-    private static function _getLocationPath ($filePath, $appRoot)
+    private static function _getLocationPath($filePath, $appRoot)
     {
         // removes the path to application root
         // from the beginning of the file path
@@ -149,20 +150,21 @@ class ClosingLocationCommentSniff extends AbstractClosingCommentSniff
         }
         $localPath = substr($filePath, $appRootAt + strlen($appRoot));
         // ensures the location path to be a relative path starting with "./".
-        if ( ! self::_stringStartsWith($localPath, './')) {
+        if (!self::_stringStartsWith($localPath, './')) {
             $localPath = './' . $localPath;
-        } else if ( ! self::_stringStartsWith($localPath, '.')
-            && self::_stringStartsWith($localPath, '/')
-        ) {
-            $localPath = '.' . $localPath;
+        } else {
+            if (!self::_stringStartsWith($localPath, '.')
+                && self::_stringStartsWith($localPath, '/')
+            ) {
+                $localPath = '.' . $localPath;
+            }
         }
+
         return $localPath;
     }//end _getLocationPath()
 
-
     /**
      * Returns the application root that should be used first.
-     *
      * There are several ways to configure the application root.
      * In order of priority :
      *   - Configuration variable ci_application_root.
@@ -177,8 +179,7 @@ class ClosingLocationCommentSniff extends AbstractClosingCommentSniff
         if (null === $appRoot) {
             $appRoot = $this->applicationRoot;
         }
+
         return $appRoot;
     }//end _getAppRoot()
 }//end class
-
-?>

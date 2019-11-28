@@ -1,7 +1,6 @@
 <?php
 /**
  * CodeIgniter_Sniffs_WhiteSpace_DisallowWitheSpaceAroundPhpTagsSniff.
- *
  * PHP version 5
  *
  * @category  PHP
@@ -14,7 +13,6 @@
 
 /**
  * CodeIgniter_Sniffs_WhiteSpace_DisallowWitheSpaceAroundPhpTagsSniff.
- *
  * Ensures that no whitespace precedes the opening PHP tag
  * or follows the closing PHP tag.
  *
@@ -28,8 +26,8 @@
 
 namespace CodeIgniter\Sniffs\WhiteSpace;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class DisallowWitheSpaceAroundPhpTagsSniff implements Sniff
 {
@@ -41,19 +39,17 @@ class DisallowWitheSpaceAroundPhpTagsSniff implements Sniff
      */
     public function register()
     {
-        return array(
-                T_OPEN_TAG,
-                T_CLOSE_TAG
-               );
-
+        return [
+            T_OPEN_TAG,
+            T_CLOSE_TAG,
+        ];
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile The current file being scanned.
-     * @param int                  $stackPtr  The position of the current token
+     * @param File $phpcsFile                 The current file being scanned.
+     * @param int  $stackPtr                  The position of the current token
      *                                        in the stack passed in $tokens.
      *
      * @return void
@@ -63,14 +59,14 @@ class DisallowWitheSpaceAroundPhpTagsSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         $php_tag_token = $tokens[$stackPtr];
-        $php_tag_code = $php_tag_token['code'];
+        $php_tag_code  = $php_tag_token['code'];
 
         if (T_OPEN_TAG === $php_tag_code) {
             // opening php tag should be the first token.
             // any whitespace beofre an opening php tag is tokenized
             // as T_INLINE_HTML, so no need to check the content of the token.
             $isFirst = 0 === $stackPtr;
-            if ( ! $isFirst) {
+            if (!$isFirst) {
                 $error = 'Any char before the opening PHP tag is prohibited. Please remove newline or indentation before the opening PHP tag.';
                 $phpcsFile->addError($error, $stackPtr, '');
             }
@@ -79,17 +75,13 @@ class DisallowWitheSpaceAroundPhpTagsSniff implements Sniff
             // closing php tag should be the last token
             // and it must not contain any whitespace.
             $php_tag_string = $php_tag_token['content'];
-            $isLast = count($tokens) - 1 === $stackPtr;
+            $isLast         = count($tokens) - 1 === $stackPtr;
             // both of the two closing php tags contains 2 chars exactly.
             $containsEndTagOnly = strlen($php_tag_string) > 2;
-            if ( ! $isLast || ! $containsEndTagOnly ) {
+            if (!$isLast || !$containsEndTagOnly) {
                 $error = 'Any char after the closing PHP tag is prohibited. Please removes newline or spaces after the closing PHP tag.';
                 $phpcsFile->addError($error, $stackPtr, '');
             }
         }
     }//end process()
-
-
 }//end class
-
-?>

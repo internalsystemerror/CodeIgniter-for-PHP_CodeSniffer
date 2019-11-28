@@ -1,7 +1,6 @@
 <?php
 /**
  * CodeIgniter_Sniffs_NamingConventions_ValidClassNameSniff.
- *
  * PHP version 5
  *
  * @category  PHP
@@ -14,14 +13,12 @@
 
 /**
  * CodeIgniter_Sniffs_NamingConventions_ValidClassNameSniff.
- *
  * Ensures that class and interface names have their first letter uppercase
  * and that words are separated with an underscore, and not CamelCased.
  *
- * @todo Try to avoid overly long and verbose names in using property rule and
+ * @todo      Try to avoid overly long and verbose names in using property rule and
  * configuration variable to set limits. Have a look at
  * CodeIgniter_Sniffs_NamingConventions_ValidMethodNameSniff.
- *
  * @category  PHP
  * @package   PHP_CodeSniffer
  * @author    Thomas Ernest <thomas.ernest@baoabz.com>
@@ -32,12 +29,11 @@
 
 namespace CodeIgniter\Sniffs\NamingConventions;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class ValidClassNameSniff implements Sniff
 {
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -46,18 +42,17 @@ class ValidClassNameSniff implements Sniff
      */
     public function register()
     {
-        return array(
+        return [
             T_CLASS,
             T_INTERFACE,
-        );
-
+        ];
     }//end register()
 
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile The current file being processed.
-     * @param int                  $stackPtr  The position of the current token
+     * @param File $phpcsFile                 The current file being processed.
+     * @param int  $stackPtr                  The position of the current token
      *                                        in the stack passed in $tokens.
      *
      * @return void
@@ -69,20 +64,17 @@ class ValidClassNameSniff implements Sniff
         // compute the expected class name
         // [^_] means "something different from _", but not "nothing or something different from _"
         $lcClassNameChunk = preg_replace('/([^_])([A-Z])/', '${1}_${2}', $className);
-        if(substr($className, 0, 3) === 'MY_') {
+        if (substr($className, 0, 3) === 'MY_') {
             $expectedClassName = $className;
         } else {
             $expectedClassName
-                = strtoupper($className[0]) . strtolower(substr($lcClassNameChunk,1));
+                = strtoupper($className[0]) . strtolower(substr($lcClassNameChunk, 1));
         }
         // ensures that the current class name
         // and the expected class name are identical
         if (0 !== strcmp($className, $expectedClassName)) {
-            $error =  'Class names should always have their first letter uppercase. Multiple words should be separated with an underscore, and not CamelCased. Please consider ' . $expectedClassName . ' instead of ' . $className . '.';
+            $error = 'Class names should always have their first letter uppercase. Multiple words should be separated with an underscore, and not CamelCased. Please consider ' . $expectedClassName . ' instead of ' . $className . '.';
             $phpcsFile->addError($error, $stackPtr, '');
         }
     }//end process()
-
 }//end class
-
-?>
