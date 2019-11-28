@@ -1,7 +1,6 @@
 <?php
 /**
  * CodeIgniter_Sniffs_Operators_LogicalOperatorAndSniff.
- *
  * PHP version 5
  *
  * @category  PHP
@@ -14,7 +13,6 @@
 
 /**
  * CodeIgniter_Sniffs_Operators_LogicalOperatorAndSniff.
- *
  * Ensures that the logical operator 'AND' is in upper case and suggest the use of its symbolic equivalent.
  *
  * @category  PHP
@@ -27,30 +25,29 @@
 
 namespace CodeIgniter\Sniffs\Operators;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class LogicalOperatorAndSniff implements Sniff
 {
-	/**
+
+    /**
      * Returns an array of tokens this test wants to listen for: symbolic and literal operators and.
      *
      * @return array
      */
     public function register()
     {
-        return array(
+        return [
             T_LOGICAL_AND,
-        );
-
+        ];
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile The current file being scanned.
-     * @param int                  $stackPtr  The position of the current token
+     * @param File $phpcsFile                 The current file being scanned.
+     * @param int  $stackPtr                  The position of the current token
      *                                        in the stack passed in $tokens.
      *
      * @return void
@@ -59,23 +56,18 @@ class LogicalOperatorAndSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $operator_token = $tokens[$stackPtr];
+        $operator_token  = $tokens[$stackPtr];
         $operator_string = $operator_token['content'];
-        $operator_code = $operator_token['code'];
+        $operator_code   = $operator_token['code'];
 
         if ($operator_string !== strtoupper($operator_string)) {
             $error_message = 'Logical operator should be in upper case;'
-                . ' use "' . strtoupper($operator_string)
-                . '" instead of "' . $operator_string . '"';
+                             . ' use "' . strtoupper($operator_string)
+                             . '" instead of "' . $operator_string . '"';
             $phpcsFile->addError($error_message, $stackPtr, '');
         }
 
         $warning_message = 'The symbolic form "&&" is preferred over the literal form "AND"';
         $phpcsFile->addWarning($warning_message, $stackPtr, '');
-
     }//end process()
-
-
 }//end class
-
-?>

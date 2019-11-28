@@ -1,7 +1,6 @@
 <?php
 /**
  * CodeIgniter_Sniffs_WhiteSpace_ElseOnNewLineSniff.
- *
  * PHP version 5
  *
  * @category  PHP
@@ -14,7 +13,6 @@
 
 /**
  * CodeIgniter_Sniffs_WhiteSpace_ElseOnNewLineSniff.
- *
  * Ensures that control structures else and elseif stand on new lines.
  *
  * @category  PHP
@@ -27,8 +25,8 @@
 
 namespace CodeIgniter\Sniffs\WhiteSpace;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class ElseOnNewLineSniff implements Sniff
 {
@@ -40,18 +38,17 @@ class ElseOnNewLineSniff implements Sniff
      */
     public function register()
     {
-        return array(
+        return [
             T_ELSE,
             T_ELSEIF,
-        );
+        ];
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile The current file being scanned.
-     * @param int                  $stackPtr  The position of the current token
+     * @param File $phpcsFile                 The current file being scanned.
+     * @param int  $stackPtr                  The position of the current token
      *                                        in the stack passed in $tokens.
      *
      * @return void
@@ -60,12 +57,12 @@ class ElseOnNewLineSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $else_token = $tokens[$stackPtr];
-        $previous_non_blank_token_ptr = $phpcsFile->findPrevious(array(T_WHITESPACE), $stackPtr - 1, null, true);
+        $else_token                   = $tokens[$stackPtr];
+        $previous_non_blank_token_ptr = $phpcsFile->findPrevious([T_WHITESPACE], $stackPtr - 1, null, true);
 
         if (false === $previous_non_blank_token_ptr) {
-        	// else is no preceded with any symbol, but it is not the responsibility of this sniff.
-        	return;
+            // else is no preceded with any symbol, but it is not the responsibility of this sniff.
+            return;
         }
 
         $previous_non_blank_token = $tokens[$previous_non_blank_token_ptr];
@@ -73,10 +70,5 @@ class ElseOnNewLineSniff implements Sniff
             $error = '"' . $else_token['content'] . '" should be on a new line.';
             $phpcsFile->addError($error, $stackPtr, '');
         }
-
     }//end process()
-
-
 }//end class
-
-?>

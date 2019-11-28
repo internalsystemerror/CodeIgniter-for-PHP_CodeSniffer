@@ -14,16 +14,26 @@
         "sort-packages": true
     },
     "require": {
-        "php": ">=5.3",
+        "php": ">=7.3",
         "codeigniter/framework": "^3.0.0",
         "squizlabs/php_codesniffer": "^3.0.0"
     },
     "require-dev": {
-        "ise/php-metapackage-development": "^2.0.4"
+        "ise/php-metapackage-development": "^2.2.2"
     },
     "autoload": {
         "psr-4": {
-            "CodeIgniter\\": "CodeIgniter/"
+            "CodeIgniter\\": "CodeIgniter/",
+            "PHP_CodeSniffer\\": "vendor/squizlabs/php_codesniffer/src"
         }
+    },
+    "scripts": {
+        "check": [
+            "@cs-check",
+            "@analyze"
+        ],
+        "analyse": "phpstan analyze -l 0 CodeIgniter --ansi",
+        "cs-check": "phpcs",
+        "cs-fix": "phpcbf"
     }
 }

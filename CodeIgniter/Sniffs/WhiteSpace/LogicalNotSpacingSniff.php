@@ -1,7 +1,6 @@
 <?php
 /**
  * CodeIgniter_Sniffs_WhiteSpace_LogicalNotSpacingSniff.
- *
  * PHP version 5
  *
  * @category  PHP
@@ -14,7 +13,6 @@
 
 /**
  * CodeIgniter_Sniffs_WhiteSpace_LogicalNotSpacingSniff.
- *
  * Ensures that at exactly a space precedes and follows the logical operator !.
  *
  * @category  PHP
@@ -27,8 +25,8 @@
 
 namespace CodeIgniter\Sniffs\WhiteSpace;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class LogicalNotSpacingSniff implements Sniff
 {
@@ -40,17 +38,16 @@ class LogicalNotSpacingSniff implements Sniff
      */
     public function register()
     {
-        return array(
+        return [
             T_BOOLEAN_NOT,
-        );
+        ];
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile The current file being scanned.
-     * @param int                  $stackPtr  The position of the current token
+     * @param File $phpcsFile                 The current file being scanned.
+     * @param int  $stackPtr                  The position of the current token
      *                                        in the stack passed in $tokens.
      *
      * @return void
@@ -62,14 +59,10 @@ class LogicalNotSpacingSniff implements Sniff
         $operator_token = $tokens[$stackPtr];
 
         $previous_token = $tokens[$stackPtr - 1];
-        $next_token = $tokens[$stackPtr + 1];
+        $next_token     = $tokens[$stackPtr + 1];
         if (T_WHITESPACE !== $previous_token['code'] || T_WHITESPACE !== $next_token['code']) {
             $error = 'Logical operator ! should always be preceded and followed with a whitespace.';
             $phpcsFile->addError($error, $stackPtr, '');
         }
     }//end process()
-
-
 }//end class
-
-?>

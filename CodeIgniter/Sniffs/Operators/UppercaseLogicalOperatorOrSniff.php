@@ -1,7 +1,6 @@
 <?php
 /**
  * CodeIgniter_Sniffs_Operators_UppercaseLogicalOperatorOrSniff.
- *
  * PHP version 5
  *
  * @category  PHP
@@ -14,7 +13,6 @@
 
 /**
  * CodeIgniter_Sniffs_Operators_UppercaseLogicalOperatorOrSniff.
- *
  * Ensures that the logical operator 'OR' is in upper cases and its symbolic equivalent.
  *
  * @category  PHP
@@ -27,11 +25,12 @@
 
 namespace CodeIgniter\Sniffs\Operators;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class UppercaseLogicalOperatorOrSniff implements Sniff
 {
+
     /**
      * Returns an array of tokens this test wants to listen for: literal and symbolic operators or.
      *
@@ -39,19 +38,17 @@ class UppercaseLogicalOperatorOrSniff implements Sniff
      */
     public function register()
     {
-        return array(
+        return [
             T_BOOLEAN_OR,
             T_LOGICAL_OR,
-        );
-
+        ];
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile The current file being scanned.
-     * @param int                  $stackPtr  The position of the current token
+     * @param File $phpcsFile                 The current file being scanned.
+     * @param int  $stackPtr                  The position of the current token
      *                                        in the stack passed in $tokens.
      *
      * @return void
@@ -60,25 +57,22 @@ class UppercaseLogicalOperatorOrSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $operator_token = $tokens[$stackPtr];
+        $operator_token  = $tokens[$stackPtr];
         $operator_string = $operator_token['content'];
-        $operator_code = $operator_token['code'];
+        $operator_code   = $operator_token['code'];
 
         if ($operator_code == T_BOOLEAN_OR) {
             $error_message = 'Logical operator "' . $operator_string
-                . '" is prohibited; use "OR" instead';
+                             . '" is prohibited; use "OR" instead';
             $phpcsFile->addError($error_message, $stackPtr, '');
-        }
-        // it is literal, if it is not symbolic
-        else if ($operator_string !== strtoupper($operator_string)) {
-            $error_message = 'Logical operator should be in upper case;'
-                . ' use "' . strtoupper($operator_string)
-                . '" instead of "' . $operator_string . '"';
-            $phpcsFile->addError($error_message, $stackPtr, '');
+        } // it is literal, if it is not symbolic
+        else {
+            if ($operator_string !== strtoupper($operator_string)) {
+                $error_message = 'Logical operator should be in upper case;'
+                                 . ' use "' . strtoupper($operator_string)
+                                 . '" instead of "' . $operator_string . '"';
+                $phpcsFile->addError($error_message, $stackPtr, '');
+            }
         }
     }//end process()
-
-
 }//end class
-
-?>

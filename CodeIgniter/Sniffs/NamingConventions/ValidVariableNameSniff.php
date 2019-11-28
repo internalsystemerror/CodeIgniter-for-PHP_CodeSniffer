@@ -1,7 +1,6 @@
 <?php
 /**
  * CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff.
- *
  * PHP version 5
  *
  * @category  PHP
@@ -12,10 +11,8 @@
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
-
 /**
  * CodeIgniter_Sniffs_NamingConventions_ValidVariableNameSniff.
- *
  * Ensures that variable names contain only lowercase letters,
  * use underscore separators.
  * Ensures that class attribute names are prefixed with an underscore,
@@ -23,13 +20,12 @@
  * Ensure that variable names are longer than 3 chars except those declared
  * in for loops.
  *
- * @todo Try to avoid overly long and verbose names in using property rule and
+ * @todo      Try to avoid overly long and verbose names in using property rule and
  * configuration variable to set limits. Have a look at
  * CodeIgniter_Sniffs_NamingConventions_ValidMethodNameSniff.
- * @todo Use a property rule or a configuration variable to allow users to set
+ * @todo      Use a property rule or a configuration variable to allow users to set
  * minimum variable name length. Have a look at
  * CodeIgniter_Sniffs_Files_ClosingLocationCommentSniff and application root.
- *
  * @category  PHP
  * @package   PHP_CodeSniffer
  * @author    Thomas Ernest <thomas.ernest@baoabz.com>
@@ -40,19 +36,18 @@
 
 namespace CodeIgniter\Sniffs\NamingConventions;
 
-use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
-use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Exceptions\TokenizerException;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
 
 class ValidVariableNameSniff extends AbstractVariableSniff
 {
 
-
     /**
      * Processes class member variables.
      *
-     * @param File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token
+     * @param File $phpcsFile                 The file being scanned.
+     * @param int  $stackPtr                  The position of the current token
      *                                        in the stack passed in $tokens.
      *
      * @return void
@@ -60,85 +55,21 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     protected function processMemberVar(File $phpcsFile, $stackPtr)
     {
         // get variable name and properties
-        $tokens = $phpcsFile->getTokens();
-        $varTk = $tokens[$stackPtr];
-        $varName = substr($varTk['content'], 1);
+        $tokens   = $phpcsFile->getTokens();
+        $varTk    = $tokens[$stackPtr];
+        $varName  = substr($varTk['content'], 1);
         $varProps = $phpcsFile->getMemberProperties($stackPtr);
         // check(s)
-        if ( ! $this->checkLowerCase($phpcsFile, $stackPtr, $varName) ) {
+        if (!$this->checkLowerCase($phpcsFile, $stackPtr, $varName)) {
             return;
         }
-        if ( ! $this->checkVisibilityPrefix($phpcsFile, $stackPtr, $varName, $varProps)) {
+        if (!$this->checkVisibilityPrefix($phpcsFile, $stackPtr, $varName, $varProps)) {
             return;
         }
-        if ( ! $this->checkLength($phpcsFile, $stackPtr, $varName)) {
+        if (!$this->checkLength($phpcsFile, $stackPtr, $varName)) {
             return;
         }
-
     }//end processMemberVar()
-
-
-    /**
-     * Processes normal variables.
-     *
-     * @param File $phpcsFile The file where this token was found.
-     * @param int                  $stackPtr  The position where the token was found.
-     *
-     * @return void
-     */
-    protected function processVariable(File $phpcsFile, $stackPtr)
-    {
-        // get variable name
-        $tokens = $phpcsFile->getTokens();
-        $varTk = $tokens[$stackPtr];
-        $varName = substr($varTk['content'], 1);
-        // skip the current object variable, i.e. $this
-        if (0 === strcmp($varName, 'this')) {
-            return;
-        }
-        // check(s)
-        if ( ! $this->checkLowerCase($phpcsFile, $stackPtr, $varName)) {
-            return;
-        }
-        if ( ! $this->checkLength($phpcsFile, $stackPtr, $varName)) {
-            return;
-        }
-
-    }//end processVariable()
-
-
-    /**
-     * Processes variables in double quoted strings.
-     *
-     * @param File $phpcsFile The file where this token was found.
-     * @param int                  $stackPtr  The position where the token was found.
-     *
-     * @return void
-     */
-    protected function processVariableInString(File $phpcsFile, $stackPtr)
-    {
-        $tokens = $phpcsFile->getTokens();
-        $stringTk = $tokens[$stackPtr];
-        $stringString = $stringTk['content'];
-        $varAt = self::_getVariablePosition($stringString, 0);
-        while (false !== $varAt) {
-            // get variable name
-            $matches = array();
-            preg_match('/^\$\{?([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\}?/', substr($stringString, $varAt), $matches);
-            $varName = $matches[1];
-            // check(s)
-            if ( ! $this->checkLowerCase($phpcsFile, $stackPtr, $varName)) {
-                return;
-            }
-            if ( ! $this->checkLength($phpcsFile, $stackPtr, $varName)) {
-                return;
-            }
-            // prepare checking next variable
-            $varAt = self::_getVariablePosition($stringString, $varAt + 1);
-        }
-
-    }//end processVariableInString()
-
 
     /**
      * Checks that the variable name is all in lower case, else it add an error
@@ -146,10 +77,10 @@ class ValidVariableNameSniff extends AbstractVariableSniff
      * otherwise.
      * The list of allowed upper case names is defined in the function.
      *
-     * @param File $phpcsFile The current file being processed.
-     * @param int                  $stackPtr  The position of the current token
+     * @param File   $phpcsFile               The current file being processed.
+     * @param int    $stackPtr                The position of the current token
      *                                        in the stack passed in $tokens.
-     * @param string               $varName   The name of the variable to
+     * @param string $varName                 The name of the variable to
      *                                        procced without $, { nor }.
      *
      * @return bool true if variable name is all in lower case, false otherwise.
@@ -157,18 +88,17 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     protected function checkLowerCase(File $phpcsFile, $stackPtr, $varName)
     {
         $isInLowerCase = true;
-	
-        if (0 !== strcmp($varName, strtolower($varName))) {
 
+        if (0 !== strcmp($varName, strtolower($varName))) {
             // allowed upper case names
-            $allowedUpperCaseNames = array('CI', '_GET', '_POST', '_FILES', '_SERVER', '_COOKIE');
+            $allowedUpperCaseNames = ['CI', '_GET', '_POST', '_FILES', '_SERVER', '_COOKIE'];
             if (in_array($varName, $allowedUpperCaseNames)) {
                 return true;
             }
 
             // get the expected variable name
             $varNameWithUnderscores = preg_replace('/([A-Z])/', '_${1}', $varName);
-            $expectedVarName = strtolower(ltrim($varNameWithUnderscores, '_'));
+            $expectedVarName        = strtolower(ltrim($varNameWithUnderscores, '_'));
             // adapts the error message to the error case
             if (strlen($varNameWithUnderscores) > strlen($varName)) {
                 $error = 'Variables should not use CamelCasing or start with a Capital.';
@@ -176,13 +106,14 @@ class ValidVariableNameSniff extends AbstractVariableSniff
                 $error = 'Variables should be entirely lowercased.';
             }
             $error = $error . 'Please consider "' . $expectedVarName
-                . '" instead of "' . $varName . '".';
+                     . '" instead of "' . $varName . '".';
             // adds the error and changes return value
             $phpcsFile->addError($error, $stackPtr, '');
             $isInLowerCase = false;
         }
+
         return $isInLowerCase;
-    }//end checkLowerCase()
+    }//end processVariable()
 
     /**
      * Checks that an underscore is used at the beginning of a variable only if
@@ -190,13 +121,13 @@ class ValidVariableNameSniff extends AbstractVariableSniff
      * must not be prefixed with an underscore. Returns true if $varName is
      * properly prefixed according to the variable visibility provided in
      * $varProps, false otherwise.
-     * 
-     * @param File $phpcsFile The current file being processed.
-     * @param int                  $stackPtr  The position of the current token
+     *
+     * @param File   $phpcsFile               The current file being processed.
+     * @param int    $stackPtr                The position of the current token
      *                                        in the stack passed in $tokens.
-     * @param string               $varName   The name of the variable to
+     * @param string $varName                 The name of the variable to
      *                                        procced without $, { nor }.
-     * @param array                $varProps  Member variable properties like
+     * @param array  $varProps                Member variable properties like
      *                                        its visibility.
      *
      * @return bool true if variable name is prefixed with an underscore only
@@ -205,30 +136,32 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     protected function checkVisibilityPrefix(File $phpcsFile, $stackPtr, $varName, $varProps)
     {
         $isVisibilityPrefixRight = true;
-        $scope = $varProps['scope'];
+        $scope                   = $varProps['scope'];
         // If it's a private variable, it must have an underscore on the front.
-        if ($scope === 'private' && $varName{0} !== '_') {
+        if ($scope === 'private' && $varName[0] !== '_') {
             $error = "Private variable name \"$varName\" must be prefixed with an underscore";
             $phpcsFile->addError($error, $stackPtr, '');
             $isVisibilityPrefixRight = false;
-        } else if ($scope !== 'private' && $varName{0} === '_') {
-            // If it's not a private variable,
-            // then it must not start with an underscore.
-            if (isset ($scopeSpecified) && true === $scopeSpecified) {
-                $error = "Public variable name \"$varName\" must not be prefixed with an underscore";
-            } else {
-                $error = ucfirst($scope) . " variable name \"$varName\" must not be prefixed with an underscore";
+        } else {
+            if ($scope !== 'private' && $varName[0] === '_') {
+                // If it's not a private variable,
+                // then it must not start with an underscore.
+                if (isset($scopeSpecified) && true === $scopeSpecified) {
+                    $error = "Public variable name \"$varName\" must not be prefixed with an underscore";
+                } else {
+                    $error = ucfirst($scope) . " variable name \"$varName\" must not be prefixed with an underscore";
+                }
+                $phpcsFile->addError($error, $stackPtr, '');
+                $isVisibilityPrefixRight = false;
             }
-            $phpcsFile->addError($error, $stackPtr, '');
-            $isVisibilityPrefixRight = false;
         }
+
         return $isVisibilityPrefixRight;
-    }//end checkVisibilityPrefix()
+    }//end processVariableInString()
 
     /**
      * Checks that variable name length is not too short. Returns true, if it
      * meets minimum length requirement, false otherwise.
-     *
      * A variable name is too short if it is shorter than the minimal
      * length and it isn't in the list of allowed short names nor declared in a
      * for loop (in which it would be nested).
@@ -236,10 +169,10 @@ class ValidVariableNameSniff extends AbstractVariableSniff
      * The list of allowed short names is defined in the function.
      * It is case-sensitive. It contains only 'ci' and 'CI' now.
      *
-     * @param File $phpcsFile The current file being processed.
-     * @param int                  $stackPtr  The position of the current token
+     * @param File   $phpcsFile               The current file being processed.
+     * @param int    $stackPtr                The position of the current token
      *                                        in the stack passed in $tokens.
-     * @param string               $varName   The name of the variable to
+     * @param string $varName                 The name of the variable to
      *                                        procced without $, { nor }.
      *
      * @return bool false if variable name $varName is shorter than the minimal
@@ -248,8 +181,8 @@ class ValidVariableNameSniff extends AbstractVariableSniff
      */
     protected function checkLength(File $phpcsFile, $stackPtr, $varName)
     {
-        $minLength = 2;
-        $allowedShortName = array('ci', 'CI', 'k', 'v', 'i', 'e');
+        $minLength        = 2;
+        $allowedShortName = ['ci', 'CI', 'k', 'v', 'i', 'e'];
 
         $isLengthRight = true;
         // cleans variable name
@@ -265,27 +198,28 @@ class ValidVariableNameSniff extends AbstractVariableSniff
             }
             // adds the error message finally
             $error = 'Very short'
-                . (
-                    $minLength > 0 ?
-                    ' (i.e. less than ' . ($minLength) . ' chars)'
-                    : ''
-                )
-                . ', non-word variables like "' . $varName
-                . '" should only be used as iterators in for() loops.';
+                     . (
+                     $minLength > 0 ?
+                         ' (i.e. less than ' . ($minLength) . ' chars)'
+                         : ''
+                     )
+                     . ', non-word variables like "' . $varName
+                     . '" should only be used as iterators in for() loops.';
             $phpcsFile->addError($error, $stackPtr, '');
             $isLengthRight = false;
         }
+
         return $isLengthRight;
-    }//end checkLength()
+    }//end checkLowerCase()
 
     /**
      * Returns the position of closest previous T_FOR, if token associated with
      * $stackPtr in $phpcsFile is in a for loop, otherwise false.
      *
-     * @param File $phpcsFile The current file being processed.
-     * @param int                  $stackPtr  The position of the current token
+     * @param File   $phpcsFile               The current file being processed.
+     * @param int    $stackPtr                The position of the current token
      *                                        in the stack passed in $tokens.
-     * @param string               $varName   The name of the variable to
+     * @param string $varName                 The name of the variable to
      *                                        procced without $, { nor }.
      *
      * @return int|bool Position of T_FOR if token associated with $stackPtr in
@@ -310,32 +244,33 @@ class ValidVariableNameSniff extends AbstractVariableSniff
                 $keepLookingFromPtr = false;
             }
         }
+
         return false;
-    }//end _isInForLoop()
+    }//end checkVisibilityPrefix()
 
     /**
      * Returns the position of closest previous T_FOR, if token associated with
      * $stackPtr in $phpcsFile is in the head of a for loop, otherwise false.
      * The head is the code placed between parenthesis next to the key word
      * 'for' : for (<loop_head>) {<loop_body>}.
-     * 
-     * @param File $phpcsFile The current file being processed.
-     * @param int                  $stackPtr  The position of the current token
+     *
+     * @param File $phpcsFile                 The current file being processed.
+     * @param int  $stackPtr                  The position of the current token
      *                                        in the stack passed in $tokens.
-     * 
+     *
      * @return int|bool Position of T_FOR if token associated with $stackPtr in
      *                  $phpcsFile is in the head of a for loop, otherwise false.
      */
     private static function _isInForLoopHead(File $phpcsFile, $stackPtr)
     {
         $isInForLoop = false;
-        $tokens = $phpcsFile->getTokens();
-        $currentTk = $tokens[$stackPtr];
+        $tokens      = $phpcsFile->getTokens();
+        $currentTk   = $tokens[$stackPtr];
         if (array_key_exists('nested_parenthesis', $currentTk)) {
             $nestedParenthesis = $currentTk['nested_parenthesis'];
-            foreach ( $nestedParenthesis as $openParPtr => $closeParPtr) {
+            foreach ($nestedParenthesis as $openParPtr => $closeParPtr) {
                 $nonWhitspacePtr = $phpcsFile->findPrevious(
-                    array(T_WHITESPACE),
+                    [T_WHITESPACE],
                     $openParPtr - 1,
                     null,
                     true,
@@ -351,8 +286,9 @@ class ValidVariableNameSniff extends AbstractVariableSniff
                 }
             }
         }
+
         return $isInForLoop;
-    }//end _isInForLoopHead()
+    }//end checkLength()
 
     /**
      * Returns the position of closest previous T_FOR, if token associated with
@@ -361,8 +297,8 @@ class ValidVariableNameSniff extends AbstractVariableSniff
      * declaration, enclosed with curly brackets usually.
      * 'for' : for (<loop_head>) {<loop_body>}.
      *
-     * @param File $phpcsFile The current file being processed.
-     * @param int                  $stackPtr  The position of the current token
+     * @param File $phpcsFile                 The current file being processed.
+     * @param int  $stackPtr                  The position of the current token
      *                                        in the stack passed in $tokens.
      *
      * @return int|bool Position of T_FOR if token associated with $stackPtr in
@@ -371,20 +307,20 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     private static function _isInForLoopBody(File $phpcsFile, $stackPtr)
     {
         $isInForLoop = false;
-        $tokens = $phpcsFile->getTokens();
+        $tokens      = $phpcsFile->getTokens();
         // get englobing hierarchy
         $parentPtrAndCode = $tokens[$stackPtr]['conditions'];
         krsort($parentPtrAndCode);
 
         // looks for a for loop having a body not enclosed with curly brackets,
         // which involves that its body contains only one instruction.
-        if (is_array($parentPtrAndCode) && ! empty($parentPtrAndCode)) {
-            $parentCode = reset($parentPtrAndCode);
-            $parentPtr = key($parentPtrAndCode);
+        if (is_array($parentPtrAndCode) && !empty($parentPtrAndCode)) {
+            $parentCode     = reset($parentPtrAndCode);
+            $parentPtr      = key($parentPtrAndCode);
             $openBracketPtr = $tokens[$parentPtr]['scope_opener'];
         } else {
-            $parentCode = 0;
-            $parentPtr = 0;
+            $parentCode     = 0;
+            $parentPtr      = 0;
             $openBracketPtr = 0;
         }
         $openResearchScopePtr = $stackPtr;
@@ -392,7 +328,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
         // control statement or may be near to function calls, etc...
         while (false !== $openResearchScopePtr) {
             $closeParPtr = $phpcsFile->findPrevious(
-                array(T_CLOSE_PARENTHESIS),
+                [T_CLOSE_PARENTHESIS],
                 $openResearchScopePtr,
                 null,
                 false,
@@ -413,7 +349,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
                     $closeParenthesisTk = $tokens[$closeParPtr];
                     if (array_key_exists('parenthesis_owner', $closeParenthesisTk)) {
                         $mayBeForPtr = $closeParenthesisTk['parenthesis_owner'];
-                        $mayBeForTk = $tokens[$mayBeForPtr];
+                        $mayBeForTk  = $tokens[$mayBeForPtr];
                         if (T_FOR === $mayBeForTk['code']) {
                             return $mayBeForPtr;
                         }
@@ -430,7 +366,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
                     // re-initialize variables about the englobing structure
                     if (is_array($parentPtrAndCode)) {
                         $parentCode = next($parentPtrAndCode);
-                        $parentPtr = key($parentPtrAndCode);
+                        $parentPtr  = key($parentPtrAndCode);
                         if (!isset($tokens[$parentPtr])) {
                             break;
                         }
@@ -447,17 +383,18 @@ class ValidVariableNameSniff extends AbstractVariableSniff
                 return $parentPtr;
             }
         }
+
         return false;
-    }//end _isInForLoopBody()
+    }//end _isInForLoop()
 
     /**
      * Returns true if a variable declared in the head of the for loop pointed
      * by $forPtr in file $phpcsFile has the name $varName.
      *
-     * @param File $phpcsFile The current file being processed.
-     * @param int                  $forPtr    The position of the 'for' token
+     * @param File   $phpcsFile               The current file being processed.
+     * @param int    $forPtr                  The position of the 'for' token
      *                                        in the stack passed in $tokens.
-     * @param string               $varName   The name of the variable to
+     * @param string $varName                 The name of the variable to
      *                                        procced without $, { nor }.
      *
      * @return int|bool true if a variable declared in the head of the for loop
@@ -466,12 +403,12 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     private static function _isDeclaredInForLoop(File $phpcsFile, $forPtr, $varName)
     {
         $isDeclaredInFor = false;
-        $tokens = $phpcsFile->getTokens();
-        $forVarPtrs = self::_getVarDeclaredInFor($phpcsFile, $forPtr);
+        $tokens          = $phpcsFile->getTokens();
+        $forVarPtrs      = self::_getVarDeclaredInFor($phpcsFile, $forPtr);
         foreach ($forVarPtrs as $forVarPtr) {
             $forVarTk = $tokens[$forVarPtr];
             // get variable name
-            $matches = array();
+            $matches = [];
             preg_match('/^\$\{?([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\}?/', $forVarTk['content'], $matches);
             $forVarName = $matches[1];
             if (0 === strcmp($forVarName, $varName)) {
@@ -479,19 +416,19 @@ class ValidVariableNameSniff extends AbstractVariableSniff
                 break;
             }
         }
+
         return $isDeclaredInFor;
-    }//end _isDeclaredInForLoop()
+    }//end _isInForLoopHead()
 
     /**
      * Returns list of pointers to variables declared in for loop associated to
      * $forPtr in file $phpcsFile.
-     *
      * All pointers in the result list are pointing to token with code
      * T_VARIABLE. An exception is raised, if $forPtr doesn't point a token with
      * code T_FOR.
      *
-     * @param File $phpcsFile The current file being processed.
-     * @param int                  $forPtr    The position of the current token
+     * @param File $phpcsFile                 The current file being processed.
+     * @param int  $forPtr                    The position of the current token
      *                                        in the stack passed in $tokens.
      *
      * @return array List of pointers to variables declared in for loop $forPtr.
@@ -499,28 +436,91 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     private static function _getVarDeclaredInFor(File $phpcsFile, $forPtr)
     {
         $tokens = $phpcsFile->getTokens();
-        $forTk = $tokens[$forPtr];
+        $forTk  = $tokens[$forPtr];
         if (T_FOR !== $forTk['code']) {
             throw new TokenizerException('$forPtr must be of type T_FOR');
         }
-        $openParPtr = $forTk['parenthesis_opener'];
+        $openParPtr        = $forTk['parenthesis_opener'];
         $openParenthesisTk = $tokens[$openParPtr];
-        $endOfDeclPtr = $phpcsFile->findNext(array(T_SEMICOLON), $openParPtr);
-        $forVarPtrs = array();
-        $varPtr = $phpcsFile->findNext(
-            array(T_VARIABLE),
+        $endOfDeclPtr      = $phpcsFile->findNext([T_SEMICOLON], $openParPtr);
+        $forVarPtrs        = [];
+        $varPtr            = $phpcsFile->findNext(
+            [T_VARIABLE],
             $openParPtr + 1,
             $endOfDeclPtr
         );
         while (false !== $varPtr) {
             $forVarPtrs [] = $varPtr;
-            $varPtr = $phpcsFile->findNext(
-                array(T_VARIABLE),
+            $varPtr        = $phpcsFile->findNext(
+                [T_VARIABLE],
                 $varPtr + 1,
                 $endOfDeclPtr
             );
         }
+
         return $forVarPtrs;
+    }//end _isInForLoopBody()
+
+    /**
+     * Processes normal variables.
+     *
+     * @param File $phpcsFile The file where this token was found.
+     * @param int  $stackPtr  The position where the token was found.
+     *
+     * @return void
+     */
+    protected function processVariable(File $phpcsFile, $stackPtr)
+    {
+        // get variable name
+        $tokens  = $phpcsFile->getTokens();
+        $varTk   = $tokens[$stackPtr];
+        $varName = substr($varTk['content'], 1);
+        // skip the current object variable, i.e. $this
+        if (0 === strcmp($varName, 'this')) {
+            return;
+        }
+        // check(s)
+        if (!$this->checkLowerCase($phpcsFile, $stackPtr, $varName)) {
+            return;
+        }
+        if (!$this->checkLength($phpcsFile, $stackPtr, $varName)) {
+            return;
+        }
+    }//end _isDeclaredInForLoop()
+
+    /**
+     * Processes variables in double quoted strings.
+     *
+     * @param File $phpcsFile The file where this token was found.
+     * @param int  $stackPtr  The position where the token was found.
+     *
+     * @return void
+     */
+    protected function processVariableInString(File $phpcsFile, $stackPtr)
+    {
+        $tokens       = $phpcsFile->getTokens();
+        $stringTk     = $tokens[$stackPtr];
+        $stringString = $stringTk['content'];
+        $varAt        = self::_getVariablePosition($stringString, 0);
+        while (false !== $varAt) {
+            // get variable name
+            $matches = [];
+            preg_match(
+                '/^\$\{?([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\}?/',
+                substr($stringString, $varAt),
+                $matches
+            );
+            $varName = $matches[1];
+            // check(s)
+            if (!$this->checkLowerCase($phpcsFile, $stackPtr, $varName)) {
+                return;
+            }
+            if (!$this->checkLength($phpcsFile, $stackPtr, $varName)) {
+                return;
+            }
+            // prepare checking next variable
+            $varAt = self::_getVariablePosition($stringString, $varAt + 1);
+        }
     }//end _getVarDeclaredInFor()
 
     /**
@@ -539,8 +539,8 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     private static function _getVariablePosition($haystack, $offset = 0)
     {
         $var_starts_at = strpos($haystack, '$', $offset);
-        $is_a_var = false;
-        while (false !== $var_starts_at && ! $is_a_var) {
+        $is_a_var      = false;
+        while (false !== $var_starts_at && !$is_a_var) {
             // makes sure that $ is used for a variable and not as a symbol,
             // if $ is protected with the escape char, then it is a symbol.
             if (0 !== strcmp($haystack[$var_starts_at - 1], '\\')) {
@@ -563,7 +563,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
             }
             // update $var_starts_at for the next variable
             // only if no variable was found, since it is returned otherwise.
-            if ( ! $is_a_var) {
+            if (!$is_a_var) {
                 $var_starts_at = strpos($haystack, '$', $var_starts_at + 1);
             }
         }
@@ -574,5 +574,3 @@ class ValidVariableNameSniff extends AbstractVariableSniff
         }
     }//end _getVariablePosition()
 }//end class
-
-?>

@@ -1,7 +1,6 @@
 <?php
 /**
  * CodeIgniter_Sniffs_Files_ClosingFileCommentSniff.
- *
  * PHP version 5
  *
  * @category  PHP
@@ -12,13 +11,10 @@
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
-
 /**
  * CodeIgniter_Sniffs_Files_ClosingFileCommentSniff.
- *
  * Ensures that a comment containing the file name is available at the end of file.
  * Only other comments and whitespaces are allowed to follow this specific comment.
- *
  * It may be all kind of comment like multi-line and inline C-style comments as
  * well as PERL-style comments. Any number of white may separate comment delimiters
  * from comment content. However, content has to be equal to template
@@ -35,7 +31,6 @@
 
 namespace CodeIgniter\Sniffs\Files;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
 
 class ClosingFileCommentSniff extends AbstractClosingCommentSniff
@@ -48,18 +43,16 @@ class ClosingFileCommentSniff extends AbstractClosingCommentSniff
      */
     public function register()
     {
-        return array(
+        return [
             T_OPEN_TAG,
-        );
-
+        ];
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile The current file being scanned.
-     * @param int                  $stackPtr  The position of the current token
+     * @param File $phpcsFile                 The current file being scanned.
+     * @param int  $stackPtr                  The position of the current token
      *                                        in the stack passed in $tokens.
      *
      * @return void
@@ -73,39 +66,39 @@ class ClosingFileCommentSniff extends AbstractClosingCommentSniff
             }
         }
 
-        $fullFilename = $phpcsFile->getFilename();
-        $filename = basename($fullFilename);
+        $fullFilename    = $phpcsFile->getFilename();
+        $filename        = basename($fullFilename);
         $commentTemplate = "End of file $filename";
 
-        $tokens = $phpcsFile->getTokens();
-        $currentToken = count($tokens) - 1;
-        $hasClosingFileComment = false;
+        $tokens                     = $phpcsFile->getTokens();
+        $currentToken               = count($tokens) - 1;
+        $hasClosingFileComment      = false;
         $isNotAWhitespaceOrAComment = false;
         while ($currentToken >= 0
-            && ! $isNotAWhitespaceOrAComment
-            && ! $hasClosingFileComment
+               && !$isNotAWhitespaceOrAComment
+               && !$hasClosingFileComment
         ) {
-            $token = $tokens[$currentToken];
+            $token     = $tokens[$currentToken];
             $tokenCode = $token['code'];
             if (T_COMMENT === $tokenCode) {
                 $commentString = self::_getCommentContent($token['content']);
                 if (0 === strcmp($commentString, $commentTemplate)) {
                     $hasClosingFileComment = true;
                 }
-            } else if (T_WHITESPACE === $tokenCode) {
-                // Whitespaces are allowed between the closing file comment,
-                // other comments and end of file
             } else {
-                $isNotAWhitespaceOrAComment = true;
+                if (T_WHITESPACE === $tokenCode) {
+                    // Whitespaces are allowed between the closing file comment,
+                    // other comments and end of file
+                } else {
+                    $isNotAWhitespaceOrAComment = true;
+                }
             }
             $currentToken--;
         }
 
-        if ( ! $hasClosingFileComment) {
+        if (!$hasClosingFileComment) {
             $error = 'No comment block marks the end of file instead of the closing PHP tag. Please add a comment block containing only "' . $commentTemplate . '".';
             $phpcsFile->addError($error, $currentToken, 'ClosingFileComment');
         }
     }//end process()
 }//end class
-
-?>

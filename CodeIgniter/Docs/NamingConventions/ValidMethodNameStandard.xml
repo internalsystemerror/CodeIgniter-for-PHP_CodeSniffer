@@ -1,19 +1,19 @@
 <documentation title="Function and Method Names">
     <standard>
-    <![CDATA[
+        <![CDATA[
     Class names should always start with an uppercase letter. Multiple words should be separated with an underscore, and not CamelCased. All other class methods should be entirely lowercased and named to clearly indicate their function, preferably including a verb. Try to avoid overly long and verbose names.
     Methods and variables that are only accessed internally by your class, such as utility and helper functions that your public methods use for code abstraction, should be prefixed with an underscore.
     ]]>
     </standard>
     <code_comparison>
         <code title="Examples of valid method names">
-        <![CDATA[
+            <![CDATA[
 function get_file_properties() // descriptive, underscore separator, and all lowercase letters
 private function _get_file_properties()
         ]]>
         </code>
         <code title="Examples of invalid method names">
-        <![CDATA[
+            <![CDATA[
 function fileproperties() // not descriptive and needs underscore separator
 function fileProperties() // not descriptive and uses CamelCase
 function getfileproperties() // Better! But still missing underscore separator

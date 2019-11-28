@@ -1,7 +1,6 @@
 <?php
 /**
  * CodeIgniter_Sniffs_Files_AbstractClosingCommentSniff.
- *
  * PHP version 5
  *
  * @category  PHP
@@ -14,7 +13,6 @@
 
 /**
  * CodeIgniter_Sniffs_Files_AbstractClosingCommentSniff.
- *
  * Defines some methods used by
  * CodeIgniter_Sniffs_Files_ClosingFileCommentSniff
  * and CodeIgniter_Sniffs_Files_ClosingLocationCommentSniff.
@@ -29,55 +27,42 @@
 
 namespace CodeIgniter\Sniffs\Files;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Exceptions\TokenizerException;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class AbstractClosingCommentSniff implements Sniff
 {
-    /**
-     * As an abstract class, this sniff is not associated to any token.
-     */
-    public function register()
-    {
-      return array();
-    }
-
-    /**
-     * As an abstract class, this sniff is not dedicated to process a token.
-     */
-    public function process(File $phpcsFile, $stackPtr)
-    {
-      $error = __CLASS__.'::'.__METHOD__.' is abstract. Please develop this method in a child class.';
-      throw new TokenizerException($error);
-    }
 
     /**
      * Returns the comment without its delimiter(s) as well as leading
      * and traling whitespaces.
-     *
      * It removes the first #, the two first / (i.e. //) or the first /*
      * and last \*\/. If a comment starts with /**, then the last * will remain
      * as well as whitespaces between this star and the comment content.
      *
      * @param string $comment Comment containing either comment delimiter(s) and
-     * trailing or leading whitspaces to clean.
+     *                        trailing or leading whitspaces to clean.
      *
      * @return string Comment without comment delimiter(s) and whitespaces.
      */
-    protected static function _getCommentContent ($comment)
+    protected static function _getCommentContent($comment)
     {
         if (self::_stringStartsWith($comment, '#')) {
             $comment = substr($comment, 1);
-        } else if (self::_stringStartsWith($comment, '//')) {
-            $comment = substr($comment, 2);
-        } else if (self::_stringStartsWith($comment, '/*')) {
-            $comment = substr($comment, 2, strlen($comment) - 2 - 2);
+        } else {
+            if (self::_stringStartsWith($comment, '//')) {
+                $comment = substr($comment, 2);
+            } else {
+                if (self::_stringStartsWith($comment, '/*')) {
+                    $comment = substr($comment, 2, strlen($comment) - 2 - 2);
+                }
+            }
         }
         $comment = trim($comment);
-        return $comment;
-    }//_getCommentContent()
 
+        return $comment;
+    }
 
     /**
      * Binary safe string comparison between $needle and
@@ -89,7 +74,7 @@ class AbstractClosingCommentSniff implements Sniff
      *
      * @return bool true if $haystack starts with $needle, false otherwise.
      */
-    protected static function _stringStartsWith ($haystack, $needle)
+    protected static function _stringStartsWith($haystack, $needle)
     {
         $startsWith = false;
         if (strlen($needle) <= strlen($haystack)) {
@@ -98,8 +83,32 @@ class AbstractClosingCommentSniff implements Sniff
                 $startsWith = true;
             }
         }
+
         return $startsWith;
+    }
+
+    /**
+     * As an abstract class, this sniff is not associated to any token.
+     *
+     * @return array
+     */
+    public function register()
+    {
+        return [];
+    }//_getCommentContent()
+
+    /**
+     * As an abstract class, this sniff is not dedicated to process a token.
+     *
+     * @param File  $phpcsFile
+     * @param mixed $stackPtr
+     *
+     * @return void
+     * @throws TokenizerException
+     */
+    public function process(File $phpcsFile, $stackPtr)
+    {
+        $error = __CLASS__ . '::' . __METHOD__ . ' is abstract. Please develop this method in a child class.';
+        throw new TokenizerException($error);
     }//_stringStartsWith()
 }//end class
-
-?>

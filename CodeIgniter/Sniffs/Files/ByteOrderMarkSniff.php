@@ -1,7 +1,6 @@
 <?php
 /**
  * CodeIgniter_Sniffs_Files_ByteOrderMarkSniff.
- *
  * PHP version 5
  *
  * @category  PHP
@@ -14,7 +13,6 @@
 
 /**
  * CodeIgniter_Sniffs_Files_ByteOrderMarkSniff.
- *
  * Ensures that no BOM appears at the beginning of file.
  *
  * @category  PHP
@@ -27,11 +25,12 @@
 
 namespace CodeIgniter\Sniffs\Files;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class ByteOrderMarkSniff implements Sniff
 {
+
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -39,42 +38,23 @@ class ByteOrderMarkSniff implements Sniff
      */
     public function register()
     {
-        return array( T_OPEN_TAG );
+        return [T_OPEN_TAG];
     }//end register()
 
     /**
-     * List of supported BOM definitions.
-     *
-     * Use encoding names as keys and hex BOM representations as values.
-     *
-     * @return array
-     */
-    protected function getBomDefinitions()
-    {
-        return array(
-            'UTF-8'       => 'efbbbf',
-            'UTF-16 (BE)' => 'feff',
-            'UTF-16 (LE)' => 'fffe',
-            'UTF-32 (BE)' => '0000feff',
-            'UTF-32 (LE)' => 'fffe0000'
-        );
-    }//end getBomDefinitions()
-
-    /**
      * Process tokens.
-     *
      * Actually, only proceed when we're at index 0, this should be the only case
      * that will contain BOM. Then check if BOM definition matches what
      * we've found as file's inline HTML. Inline HTML could be longer than just BOM
      * so make sure you test as much as needed.
      *
-     * @param File $phpcsFile The current file being scanned.
-     * @param int                  $stackPtr  The position of the current token
+     * @param File $phpcsFile                 The current file being scanned.
+     * @param int  $stackPtr                  The position of the current token
      *                                        in the stack passed in $tokens.
      *
      * @return void
      */
-    public function process( File $phpcsFile, $stackPtr )
+    public function process(File $phpcsFile, $stackPtr)
     {
         // We are only interested if this is the first open tag.
         if ($stackPtr !== 0) {
@@ -83,16 +63,33 @@ class ByteOrderMarkSniff implements Sniff
             }
         }
 
-        $tokens = $phpcsFile->getTokens();
+        $tokens          = $phpcsFile->getTokens();
         $fileStartString = $tokens[0]['content'];
         foreach ($this->getBomDefinitions() as $bomName => $expectedBomHex) {
             $bomByteLength = strlen($expectedBomHex) / 2;
-            $fileStartHex = bin2hex(substr($fileStartString, 0, $bomByteLength));
+            $fileStartHex  = bin2hex(substr($fileStartString, 0, $bomByteLength));
             if ($fileStartHex === $expectedBomHex) {
                 $error = "File contains a $bomName byte order mark (BOM).";
                 $phpcsFile->addError($error, $stackPtr, '');
                 break;
             }
         }
+    }//end getBomDefinitions()
+
+    /**
+     * List of supported BOM definitions.
+     * Use encoding names as keys and hex BOM representations as values.
+     *
+     * @return array
+     */
+    protected function getBomDefinitions()
+    {
+        return [
+            'UTF-8'       => 'efbbbf',
+            'UTF-16 (BE)' => 'feff',
+            'UTF-16 (LE)' => 'fffe',
+            'UTF-32 (BE)' => '0000feff',
+            'UTF-32 (LE)' => 'fffe0000',
+        ];
     }//end process()
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="CcStandard">
+    <description>Creative Cow Coding Standards</description>
+
+    <arg name="report-full" value="./phpcs.txt"/>
+    <arg name="extensions" value="php"/>
+    <arg value="np"/>
+    <arg name="colors"/>
+
+    <rule ref="PSR2"/>
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
+        <properties>
+            <property name="ignoreBlankLines" value="false"/>
+        </properties>
+    </rule>
+
+    <file>CodeIgniter</file>
+</ruleset>

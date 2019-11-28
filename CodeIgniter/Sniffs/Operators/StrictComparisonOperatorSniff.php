@@ -1,7 +1,6 @@
 <?php
 /**
  * CodeIgniter_Sniffs_Operators_StrictComparisonOperatorSniff.
- *
  * PHP version 5
  *
  * @category  PHP
@@ -14,7 +13,6 @@
 
 /**
  * CodeIgniter_Sniffs_Operators_StrictComparisonOperatorSniff.
- *
  * Ensures that only strict comparison operators are used instead of
  * equal and not equal operators.
  *
@@ -28,15 +26,19 @@
 
 namespace CodeIgniter\Sniffs\Operators;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class StrictComparisonOperatorSniff implements Sniff
 {
-    private static $_replacements = array(
+
+    /**
+     * @var array
+     */
+    private static $_replacements = [
         T_IS_EQUAL     => '===',
         T_IS_NOT_EQUAL => '!==',
-    );
+    ];
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -45,18 +47,17 @@ class StrictComparisonOperatorSniff implements Sniff
      */
     public function register()
     {
-        return array(
+        return [
             T_IS_EQUAL,
             T_IS_NOT_EQUAL,
-        );
+        ];
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile The current file being scanned.
-     * @param int                  $stackPtr  The position of the current token
+     * @param File $phpcsFile                 The current file being scanned.
+     * @param int  $stackPtr                  The position of the current token
      *                                        in the stack passed in $tokens.
      *
      * @return void
@@ -65,17 +66,13 @@ class StrictComparisonOperatorSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $operator_token = $tokens[$stackPtr];
+        $operator_token  = $tokens[$stackPtr];
         $operator_string = $operator_token['content'];
-        $operator_code = $operator_token['code'];
+        $operator_code   = $operator_token['code'];
 
         $error_message = '"==" and "!=" are prohibited; use "'
-            . self::$_replacements[$operator_code] . '" instead of "'
-            . $operator_string . '".';
+                         . self::$_replacements[$operator_code] . '" instead of "'
+                         . $operator_string . '".';
         $phpcsFile->addError($error_message, $stackPtr, '');
     }//end process()
-
-
 }//end class
-
-?>
